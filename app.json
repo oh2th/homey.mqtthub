@@ -63,7 +63,7 @@
   "bugs": {
     "url": "https://github.com/RonnyWinkler/homey.mqtthub/issues"
   },
-  "homeyCommunityTopicId": 6766,
+  "homeyCommunityTopicId": 113463,
   "api": {
     "getDevices": {
       "method": "get",
