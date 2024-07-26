@@ -1,0 +1,8 @@
+*.njsproj
+
+inspector_modules
+build
+package-lock.json
+
+# Added by Homey CLI
+/.homeybuild/
