@@ -1,12 +1,12 @@
 {
   "id": "org.mqtt.hub",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "compatibility": ">=5.0.0",
   "sdk": 3,
   "brandColor": "#103b7a",
   "name": {
-    "en": "MQTT Hub Community",
-    "nl": "MQTT Hub Community"
+    "en": "MQTT Hub",
+    "nl": "MQTT Hub"
   },
   "description": {
     "en": "Turn your Homey into a HUB and let external applications discover & control all your connected devices.",

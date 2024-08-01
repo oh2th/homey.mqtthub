@@ -2,7 +2,8 @@
 
 Turn your Homey into a HUB and let external applications discover & control all your connected devices.
 
-This app is a community project based on https://github.com/harriedegroot/nl.hdg.mqtt
+This app is a community project based on https://github.com/harriedegroot/nl.hdg.mqtt from Harrie de Groot.
+Thank you for your efforts in creating this app.
 
 ## Introduction
 With this app you can communicate with all your devices connected to Homey using MQTT.  

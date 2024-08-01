@@ -16,4 +16,5 @@ All functionality of the MQTT Hub:
 
 All can be configured via extensive app settings and connection wizards.
 
-This app is a community project based on https://github.com/harriedegroot/nl.hdg.mqtt
+This app is a community project based on https://github.com/harriedegroot/nl.hdg.mqtt from Harrie de Groot.
+Thank you for your efforts in creating this app.
