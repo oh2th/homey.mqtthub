@@ -105,11 +105,14 @@ class MQTTHub extends Homey.App {
                     }
                 });
 
-                this.homey.flow.getActionCard('start_hub')
+            this.homey.flow.getActionCard('start_hub')
                 .registerRunListener(async (args, state) => {
                     this.log('StartHub triggered from flow');
                     try {
-                        await this.start(true);
+                        await this.stop();
+                        Log.debug("Register DeviceManager");
+                        await this.deviceManager.register();
+                        await this.start();
                     }
                     catch (error) {
                         this.log('StartHub flow card trigger failed: ' + error.message);
@@ -189,7 +192,8 @@ class MQTTHub extends Homey.App {
 
         Log.info('stop Hub');
         try {
-            await this._sendLastWillMessage();
+            // await this._sendLastWillMessage();
+            await this._sendLastWillMessageAndReleaseAllTopics();
         } catch (e) {
             Log.error("Failed to send last will message on stop");
             Log.error(e);

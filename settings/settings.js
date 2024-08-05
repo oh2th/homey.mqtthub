@@ -155,10 +155,23 @@ function onHomeyReady(homeyReady){
                         entries = entries.filter(entry => { return entry.name.toLowerCase().includes( filter.toLowerCase())} );
                     }
                     entries.sort((a, b) => {
-                        if (    a.zoneName < b.zoneName && 
-                                a.name < b.name ) 
-                            return -1
-                        else return 1;
+                        switch (document.getElementById("deviceSort").value){
+                            case "zone_device":
+                                if (a.zoneName.toLowerCase() < b.zoneName.toLowerCase()){
+                                    return -1;
+                                }
+                                if (a.zoneName.toLowerCase() == b.zoneName.toLowerCase() && a.name.toLowerCase() < b.name.toLowerCase()){
+                                    return -1;
+                                }
+                                return +1;
+                            default: //"device":
+                                return ( a.name.toLowerCase() < b.name.toLowerCase() ? -1 : +1);
+
+                            // case "first":
+                            //     return (    a.name < b.name ) ? -1 : 1;
+                            // case "last":
+                            //     return (    a.name < b.name ) ? -1 : 1;
+                        }
                     });
                     let sortedDevices = entries.map(entry => result[entry.id]);
     

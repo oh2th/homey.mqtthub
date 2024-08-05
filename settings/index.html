@@ -346,13 +346,31 @@
                         </path>
                     </svg>
                 </div>
-                <!--Device search -->
+                <!--Device filter/sort -->
                 <div id="devicesFilterSettings">
                     <div class="setting">
-                        <label class="settings-item-description" data-i18n="tab2.filter">Search for devices</label>
-                        <div class="settings-itemgroup">
-                            <input id="devicesFilterText" type="text" oninput="updateDevices(this.value)">
-                        </div>
+                        <table style="width:100%">
+                            <tr>
+                                <td>                        
+                                    <label class="settings-item-description" data-i18n="tab2.filter">Search for devices</label>
+                                    <div class="settings-itemgroup">
+                                        <input id="devicesFilterText" type="text" oninput="updateDevices()">
+                                    </div>
+                                </td>
+                                <td>
+                                    <label class="settings-item-description" data-i18n="tab2.sort">Sort devices</label>
+                                    <div class="settings-itemgroup">
+                                        <!-- <input id="devicesSort" type="text" oninput="updateDevices()"> -->
+                                        <select id="deviceSort" onchange="updateDevices()">
+                                            <option value="device" selected="selected">Device name</option>
+                                            <option value="zone_device">Zone & Device name</option>
+                                            <!-- <option value="first">First added</option>
+                                            <option value="last">Last added</option> -->
+                                        </select>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
                     </div>
                 </div>
                 <div class="rTable">

@@ -114,7 +114,8 @@
       "devices": "Devices",
       "zone": "Zone",
       "device": "Device",
-      "filter": "Filter devices"
+      "filter": "Filter devices",
+      "sort": "Sort devices"
     }
   },
   "tab3": {
