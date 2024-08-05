@@ -104,14 +104,17 @@
     "defaultSettings": "",
     "restoreSettings": "Restore default settings",
     "performance": "Performance",
-    "performanceDelay": "Send message delay (ms)"
+    "performanceDelay": "Send message delay (ms)",
+    "devices": "Devices",
+    "devicesDefaultState": "Devices default state"
   },
   "tab2": {
     "title": "Devices",
     "devices": {
       "devices": "Devices",
       "zone": "Zone",
-      "device": "Device"
+      "device": "Device",
+      "filter": "Filter devices"
     }
   },
   "tab3": {

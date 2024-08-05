@@ -1,6 +1,6 @@
 {
   "id": "org.mqtt.hub",
-  "version": "4.0.1",
+  "version": "4.1.0",
   "compatibility": ">=5.0.0",
   "sdk": 3,
   "brandColor": "#103b7a",
@@ -295,6 +295,7 @@
         "tokens": [
           {
             "name": "value",
+            "type": "string",
             "title": {
               "en": "value",
               "nl": "waarde"
@@ -306,6 +307,7 @@
           },
           {
             "name": "Capability",
+            "type": "string",
             "title": {
               "en": "capability",
               "nl": "functionaliteit"
@@ -317,6 +319,7 @@
           },
           {
             "name": "device",
+            "type": "string",
             "title": {
               "en": "device",
               "nl": "apparaat"
@@ -352,10 +355,21 @@
         }
       },
       {
+        "id": "start_hub",
+        "title": {
+          "en": "Start Hub sync and broadcast",
+          "nl": "Start Hub sync en broadcasts"
+        }
+      },
+      {
         "id": "set_value",
         "title": {
           "en": "Set a capability value",
           "nl": "Zet de waarde van een functionaliteit"
+        },
+        "titleFormatted": {
+          "en": "Set value of capability [[capability]] to [[value]]",
+          "nl": "Zet waarde van functionaliteit [[capability]] op [[value]]"
         },
         "args": [
           {

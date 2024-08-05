@@ -105,6 +105,17 @@ class MQTTHub extends Homey.App {
                     }
                 });
 
+                this.homey.flow.getActionCard('start_hub')
+                .registerRunListener(async (args, state) => {
+                    this.log('StartHub triggered from flow');
+                    try {
+                        await this.start(true);
+                    }
+                    catch (error) {
+                        this.log('StartHub flow card trigger failed: ' + error.message);
+                    }
+                });
+
             this._initialized = true;
         }
         catch (e) {

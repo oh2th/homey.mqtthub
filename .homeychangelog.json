@@ -88,5 +88,8 @@
   },
   "4.0.1": {
     "en": "Updated images and description/app title"
+  },
+  "4.1.0": {
+    "en": "Added device filter and device default state"
   }
 }

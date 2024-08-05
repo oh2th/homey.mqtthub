@@ -48,7 +48,8 @@ const defaultSettings = {
 
     "loglevel": "info",
 
-    "performanceDelay": "0",
+    "performanceDelay": "5",
+    "devicesDefaultState": false
 };
 
 //////////////////////////////////////////////
@@ -147,7 +148,21 @@ function onHomeyReady(homeyReady){
                     if (err) return Homey.alert('getDevices ' + err);
                     devices = Object.keys(result).map(key => result[key]);
                     devices.unshift(ALL_DEVICES);
-                    this.devices = devices;
+
+                    let entries = Object.values(result);
+                    let filter = document.getElementById("devicesFilterText").value;
+                    if (filter != null){
+                        entries = entries.filter(entry => { return entry.name.toLowerCase().includes( filter.toLowerCase())} );
+                    }
+                    entries.sort((a, b) => {
+                        if (    a.zoneName < b.zoneName && 
+                                a.name < b.name ) 
+                            return -1
+                        else return 1;
+                    });
+                    let sortedDevices = entries.map(entry => result[entry.id]);
+    
+                    this.devices = sortedDevices;
                 });
             },
             getZone: function (device) {
@@ -345,7 +360,11 @@ function saveSettings(broadcast, write) {
         }
     }
 
+    // Update device list to take over default device state
+    $app.getDevices();
+
     updateInterface();
+    
     _writeSettings();
 }
 
@@ -391,7 +410,12 @@ function deviceEnabled(device) {
                 .some(d => deviceSettings[d.id] === false);
         }
 
-        return !deviceSettings || deviceSettings[device.id] !== false;
+        // ROW: show devices without individual state setting as defined in app settings
+        if (!deviceSettings || !deviceSettings[device.id]) {
+            return hubSettings.devicesDefaultState;
+            // return false;
+        }
+        return deviceSettings[device.id];
 
     } catch (e) {
         // nothing...
@@ -483,4 +507,9 @@ function setLogLevel(level) {
     } catch (e) {
         displayLog(e);
     }
+}
+
+function updateDevices(){
+    // Update device list to take over default device state
+    $app.getDevices();
 }

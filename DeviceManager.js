@@ -6,14 +6,16 @@ const EventHandler = require('./EventHandler');
 
 class DeviceManager {
 
-    constructor({ api, settings }) {
-        this.api = api;
+    // constructor({ api, settings }) {
+    constructor(app) {
+        this.app = app;
+        this.api = app.api;
 
         this.onAdd = new EventHandler('Device.add');
         this.onRemove = new EventHandler('Device.remove');
         this.onUpdate = new EventHandler('Device.update');
 
-        this.setEnabledDevices((settings || {}).devices);
+        this.setEnabledDevices((this.app.settings || {}).devices);
     }
 
     getDeviceId(device) {
@@ -176,6 +178,12 @@ class DeviceManager {
             this.devices = this.devices || {};
             this.devices[device.id] = device;
             
+            // set default device state (active or inactive)
+            // this.settings = this.app.homey.settings.get('settings');
+            // if (this.settings){
+            //     this.settings.devices[device.id] = this.settings.devicesAutoActive || false;
+            //     this.app.homey.settings.set('settings', this.settings);
+            // }         
             await this.registerDevice(device);
             await this.onAdd.emit(device);
         }
@@ -266,11 +274,13 @@ class DeviceManager {
     }
 
     isDeviceEnabled(device) {
+        let defaultState = this.app.settings.devicesDefaultState || false;
+        // let defaultState = false;   
         const enabledDevices = this._enabledDevices;
-        if (!enabledDevices) return true;
+        if (!enabledDevices) return defaultState;
         const deviceId = typeof device === 'object' ? device.id : device;
         if (!deviceId) return false;
-        return enabledDevices.hasOwnProperty(deviceId) ? enabledDevices[deviceId] : true;
+        return enabledDevices.hasOwnProperty(deviceId) ? enabledDevices[deviceId] : defaultState;
     }
 }
 

@@ -299,6 +299,25 @@
                     </div>
                 </div>
 
+                <!--Devices -->
+                <div data-i18n="tab1.devices" class="text-header">Devices</div>
+                <div id="devicesSettings">
+                    <div class="setting">
+                        <label class="settings-item-description" data-i18n="tab1.devicesDefaultState">Devices default state</label>
+                        <div class="settings-itemgroup">
+                            <div class="settings-item-text">
+                                <span data-i18n="tab1.devicesDefaultState">Devices default state</span>
+                            </div>
+                            <div class="settings-item-last">
+                                <label class="form-switch">
+                                    <input id="devicesDefaultState" type="checkbox" onclick="saveSettings()">
+                                    <i></i>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
                 <!--Performance -->
                 <div data-i18n="tab1.performance" class="text-header">Performance</div>
                 <div id="performanceSettings">
@@ -326,6 +345,15 @@
                             <animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 20 20" to="360 20 20" dur="0.5s" repeatCount="indefinite" />
                         </path>
                     </svg>
+                </div>
+                <!--Device search -->
+                <div id="devicesFilterSettings">
+                    <div class="setting">
+                        <label class="settings-item-description" data-i18n="tab2.filter">Search for devices</label>
+                        <div class="settings-itemgroup">
+                            <input id="devicesFilterText" type="text" oninput="updateDevices(this.value)">
+                        </div>
+                    </div>
                 </div>
                 <div class="rTable">
                     <div class="rTableRow devices" v-for="device in devices">
