@@ -155,6 +155,8 @@ function onHomeyReady(homeyReady){
                         entries = entries.filter(entry => { return entry.name.toLowerCase().includes( filter.toLowerCase())} );
                     }
                     entries.sort((a, b) => {
+                        if (!a.zoneName) a.zoneName = "";
+                        if (!b.zoneName) b.zoneName = "";
                         switch (document.getElementById("deviceSort").value){
                             case "zone_device":
                                 if (a.zoneName.toLowerCase() < b.zoneName.toLowerCase()){
@@ -164,6 +166,9 @@ function onHomeyReady(homeyReady){
                                     return -1;
                                 }
                                 return +1;
+                            case "time_adding":
+                                // no sort, devices are already sorted by adding time
+                                break;
                             default: //"device":
                                 return ( a.name.toLowerCase() < b.name.toLowerCase() ? -1 : +1);
 
