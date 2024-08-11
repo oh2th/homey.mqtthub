@@ -106,7 +106,7 @@
     "performance": "Performance",
     "performanceDelay": "Send message delay (ms)",
     "devices": "Devices",
-    "devicesDefaultState": "Devices default state"
+    "devicesDefaultState": "Set devices active by default"
   },
   "tab2": {
     "title": "Devices",

@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-    <!-- <link rel="stylesheet" type="text/css" href="../assets/styles.css" /> -->
+    <link rel="stylesheet" type="text/css" href="../assets/styles.css" />
     <link rel="stylesheet" type="text/css" href="settings.css" />
 
     <script type="text/javascript" src="/homey.js" data-origin="settings"></script>
@@ -25,222 +25,316 @@
                 <div id="tabb4" class="tab tab-inactive" onclick="showTab(4, true)" data-i18n="tab4.title">Log</div>
             </div>
         </div>
-        <!-- <div class="rTable tabs">
-            <div class="rTableRow">
-                <div id="tabb1" class="homey-button-secondary-shadow tab-active" onclick="showTab(1)" data-i18n="tab1.title">Settings</div>
-                <div id="tabb2" class="homey-button-secondary-shadow tab-inactive" onclick="showTab(2)" data-i18n="tab2.title">Devices</div>
-                <div id="tabb3" class="homey-button-secondary-shadow tab-inactive" onclick="showTab(3)" data-i18n="tab3.title">Instructions</div>
-                <div id="tabb4" class="homey-button-secondary-shadow tab-inactive" onclick="showTab(4, true)" data-i18n="tab4.title">Log</div>
-            </div>
-        </div> -->
-
         <div class="tab-content">
             <!-- <div style="height:8px" class="panel"></div> -->
             <div id="tab1" class="panel">
-
-                <!--GENERAL-->
-                <header class="homey-header _homey-header">
-                    <h1 class="homey-title" data-i18n="tab1.general">General</h1>
-                </header>
-                <fieldset class="homey-form-fieldset">
-                    <!-- <legend class="homey-form-legend" ><span data-i18n="tab1.general">General</span></legend> -->
-                    <label class="homey-form-checkbox">
-                        <input class="homey-form-checkbox-input" id="running" disabled="disabled" v-model="running" type="checkbox" @click="setRunning($event.target.checked)"/>
-                        <span class="homey-form-checkbox-checkmark"></span>
-                        <span class="homey-form-checkbox-text"><span data-i18n="tab1.running">Running</span></span>
-                    </label>
-                    <label class="homey-form-label" for="refreshButton" data-i18n="tab1.refresh">Publish the state of all devices</label>
-                    <button class="homey-button-secondary-shadow-full" id="refreshButton" @click="refresh()" data-i18n="tab1.broadcast">
+                <!--<div data-i18n="tab1.general" class="text-header">-GENERAL-</div>-->
+                <div class="setting">
+                    <label class="settings-item-description" data-i18n="tab1.active">Hub on/off</label>
+                    <div class="settings-itemgroup">
+                        <div class="settings-item-text">
+                            <span data-i18n="tab1.running">Running</span>
+                        </div>
+                        <div class="settings-item-last">
+                            <label class="form-switch">
+                                <input id="running" disabled="disabled" v-model="running" type="checkbox" @click="setRunning($event.target.checked)">
+                                <i></i>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="setting">
+                    <label class="settings-item-description" data-i18n="tab1.refresh">Publish the state of all devices</label>
+                    <button id="refreshButton" class="btn" @click="refresh()" data-i18n="tab1.broadcast">
+                        <!-- progress div will be placed here... -->
                         Broadcast
                     </button>
-                    <div id="progress"></div> 
-                    <label class="homey-form-label" for="protocol" data-i18n="tab1.refresh">Publish the state of all devices</label>
-                    <select class="homey-form-select" id="protocol" @change="selectProtocol($event.target.value)">
-                        <option value="homie3" selected="selected">Homie Convention v3.0.1</option>
-                        <option value="custom">Custom</option>
-                    </select>
-                </fieldset>
-
-                <!--PROTOCOL Homie Convention-->
-                <div id="homieSettings" style="display:none">
-                    <header class="homey-header _homey-header">
-                        <h1 class="homey-title" data-i18n="tab1.protocolHeader">Homie Convention</h1>
-                    </header>
-                    <fieldset class="homey-form-fieldset">
-                        <!-- <legend class="homey-form-legend" ><span data-i18n="tab1.protocolHeader">Homie Convention</span></legend> -->
-                        <label class="homey-form-label" for="homieTopic" data-i18n="tab1.topic">Topic</label>
-                        <input class="homey-form-input" id="homieTopic" type="text" onblur="saveSettings(true)">
-                    </fieldset>
+                    <div id="progress"></div> <!-- NOTE: This one is moved INSIDE the button via jQuery ==> Homey removes all elements from a button... -->
                 </div>
+                <!--<div class="setting">
+                    <label class="settings-item-description" data-i18n="tab1.deviceId">Device Id</label>
+                    <div class="settings-itemgroup">
+                        <input id="deviceId" type="text" onblur="saveSettings(true)">
+                    </div>
+                </div>-->
 
-                <!--PROTOCOL Homie Convention-->
-                <div id="customSettings" style="display:none">
-                    <header class="homey-header _homey-header">
-                        <h1 class="homey-title" data-i18n="tab1.custom">CUSTOM</h1>
-                    </header>
-                    <fieldset class="homey-form-fieldset">
-                        <!-- <legend class="homey-form-legend" ><span data-i18n="tab1.custom">CUSTOM</span></legend> -->
-                        <label class="homey-form-label" for="customTopic" data-i18n="tab1.topic">Topic</label>
-                        <input class="homey-form-input" id="customTopic" type="text" onblur="saveSettings(true)">
-                        <label class="homey-form-checkbox">
-                            <input class="homey-form-checkbox-input" id="topicIncludeClass" type="checkbox" onclick="saveSettings(true)"/>
-                            <span class="homey-form-checkbox-checkmark"></span>
-                            <span class="homey-form-checkbox-text"><span data-i18n="tab1.topicIncludeClass">Include device class in topic</span></span>
-                        </label>
-                        <label class="homey-form-checkbox">
-                            <input class="homey-form-checkbox-input" id="topicIncludeZone" disabled="disabled" type="checkbox" onclick="saveSettings(true)"/>
-                            <span class="homey-form-checkbox-checkmark"></span>
-                            <span class="homey-form-checkbox-text"><span data-i18n="tab1.topicIncludeZone">Include zone in topic</span></span>
-                        </label>
-                        <label class="homey-form-checkbox">
-                            <input class="homey-form-checkbox-input" id="normalize" disabled="disabled" type="checkbox" onclick="saveSettings(true)"/>
-                            <span class="homey-form-checkbox-checkmark"></span>
-                            <span class="homey-form-checkbox-text"><span data-i18n="tab1.topicNormalize">Normalize topics (lowercase, remove characters, etc.)</span></span>
-                        </label>
-                        <label class="homey-form-checkbox">
-                            <input class="homey-form-checkbox-input" id="broadcastDevices" type="checkbox" onclick="saveSettings()"/>
-                            <span class="homey-form-checkbox-checkmark"></span>
-                            <span class="homey-form-checkbox-text"><span data-i18n="tab1.broadcastDevicesChanges">Publish messages for all devices state changes</span></span>
-                        </label>
-                        <label class="homey-form-label" for="percentageScale" data-i18n="tab1.percentageScale">Percentage scale</label>
-                        <select class="homey-form-select" id="percentageScale" @change="saveSettings(true)">
-                            <option value="default" selected="selected">default (original value)</option>
-                            <option value="float">float (0...1)</option>
-                            <option value="int">int (0...100)</option>
+                <!--PROTOCOL-->
+                <div class="setting">
+                    <label class="settings-item-description" data-i18n="tab1.protocol">Communication protocol</label>
+                    <div class="settings-itemgroup">
+                        <select id="protocol" @change="selectProtocol($event.target.value)">
+                            <option value="homie3" selected="selected">Homie Convention v3.0.1</option>
+                            <option value="custom">Custom</option>
                         </select>
-                        <label class="homey-form-label" for="colorFormat" data-i18n="tab1.colorFormat">Color format</label>
-                        <select class="homey-form-select" id="colorFormat" @change="saveSettings(true)">
-                            <option value="hsv" selected="selected">HSV (&quot;h,s,v&quot;)</option>
-                            <option value="rgb">RGB (&quot;r,g,b&quot;)</option>
-                            <option value="values">Single topic per HSV value (Device capabilities)</option>
-                    </select>
-                    </fieldset>
+                    </div>
+                </div>
+                <div id="homieSettings" style="display:none">
+                    <div data-i18n="tab1.protocolHeader" class="text-header">Homie Convention</div>
+                    <div class="setting">
+                        <label class="settings-item-description" data-i18n="tab1.topic">Topic</label>
+                        <div class="settings-itemgroup">
+                            <input id="homieTopic" type="text" onblur="saveSettings(true)">
+                        </div>
+                    </div>
+                </div>
+                <div id="customSettings" style="display:none">
+                    <div data-i18n="tab1.custom" class="text-header">CUSTOM</div>
+                    <div class="setting">
+                        <label class="settings-item-description" data-i18n="tab1.topic">Topic</label>
+                        <div class="settings-itemgroup">
+                            <input id="customTopic" type="text" onblur="saveSettings(true)">
+                        </div>
+                    </div>
+                    <div id="topicIncludeClass-container" class="setting">
+                        <label class="settings-item-description" data-i18n="tab1.topicIncludeClass">Include device class in topic</label>
+                        <div class="settings-itemgroup">
+                            <div class="settings-item-text">
+                                <span data-i18n="tab1.includeClass">Include class</span>
+                            </div>
+                            <div class="settings-item-last">
+                                <label class="form-switch">
+                                    <input id="topicIncludeClass" type="checkbox" onclick="saveSettings(true)">
+                                    <i></i>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="topicIncludeZone-container" class="setting">
+                        <label class="settings-item-description" data-i18n="tab1.topicIncludeZone">Include zone in topic</label>
+                        <div class="settings-itemgroup">
+                            <div class="settings-item-text">
+                                <span data-i18n="tab1.includeZone">Include zone</span>
+                            </div>
+                            <div class="settings-item-last">
+                                <label class="form-switch">
+                                    <input id="topicIncludeZone" type="checkbox" onclick="saveSettings(true)">
+                                    <i></i>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="topicNormalize-container" class="setting">
+                        <label class="settings-item-description" data-i18n="tab1.topicNormalize">Normalize topics (lowercase, remove characters, etc.)</label>
+                        <div class="settings-itemgroup">
+                            <div class="settings-item-text">
+                                <span data-i18n="tab1.normalize">Normalize</span>
+                            </div>
+                            <div class="settings-item-last">
+                                <label class="form-switch">
+                                    <input id="normalize" type="checkbox" onclick="saveSettings(true)">
+                                    <i></i>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="percentageScale-container" class="setting">
+                        <label class="settings-item-description" data-i18n="tab1.percentageScale">Percentage scale</label>
+                        <div class="settings-itemgroup">
+                            <select id="percentageScale" @change="saveSettings(true)">
+                                <option value="default" selected="selected">default (original value)</option>
+                                <option value="float">float (0...1)</option>
+                                <option value="int">int (0...100)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="setting">
+                        <label class="settings-item-description" data-i18n="tab1.colorFormat">Color format</label>
+                        <div class="settings-itemgroup">
+                            <select id="colorFormat" @change="saveSettings(true)">
+                                <option value="hsv" selected="selected">HSV (&quot;h,s,v&quot;)</option>
+                                <option value="rgb">RGB (&quot;r,g,b&quot;)</option>
+                                <option value="values">Single topic per HSV value (Device capabilities)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="broadcastDevices-container" class="setting">
+                        <label class="settings-item-description" data-i18n="tab1.broadcastDevicesChanges">Publish messages for all devices state changes</label>
+                        <div class="settings-itemgroup">
+                            <div class="settings-item-text">
+                                <span data-i18n="tab1.broadcastDevices">Broadcast device state changes</span>
+                            </div>
+                            <div class="settings-item-last">
+                                <label class="form-switch">
+                                    <input id="broadcastDevices" type="checkbox" onclick="saveSettings()">
+                                    <i></i>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!--Home Assistant -->
-                <header class="homey-header _homey-header">
-                    <h1 class="homey-title" data-i18n="tab1.hass">Home Assistant Discovery</h1>
-                </header>
-                <fieldset class="homey-form-fieldset">
-                    <label class="homey-form-checkbox">
-                        <input class="homey-form-checkbox-input" id="hass" type="checkbox" onclick="saveSettings(true)"/>
-                        <span class="homey-form-checkbox-checkmark"></span>
-                        <span class="homey-form-checkbox-text"><span data-i18n="tab1.hass">Home Assistant Discovery (beta)</span></span>
-                    </label>
-                </fieldset>
-
+                <div data-i18n="tab1.hass" class="text-header">Home Assistant Discovery</div>
+                <div class="setting">
+                    <label class="settings-item-description" data-i18n="tab1.hassBroadcast">Broadcast device configurations</label>
+                    <div class="settings-itemgroup">
+                        <div class="settings-item-text">
+                            <span data-i18n="tab1.hass">Home Assistant Discovery (beta)</span>
+                        </div>
+                        <div class="settings-item-last">
+                            <label class="form-switch">
+                                <input id="hass" type="checkbox" onclick="saveSettings(true)">
+                                <i></i>
+                            </label>
+                        </div>
+                    </div>
+                </div>
                 <div id="hassSettings" style="display:none">
-                    <fieldset class="homey-form-fieldset">
-                        <label class="homey-form-label" for="hassTopic" data-i18n="tab1.topic">Topic</label>
-                        <input class="homey-form-input" id="hassTopic" type="text" onblur="saveSettings(true)">
-
-                        <label class="homey-form-label" for="hassStatusTopic" data-i18n="tab1.hassStatusTopic">Status topic</label>
-                        <input class="homey-form-input" id="hassStatusTopic" type="text" onblur="saveSettings()">
-
-                        <label class="homey-form-label" for="hassOnlineMessage" data-i18n="tab1.hassOnlineMessage">Online message</label>
-                        <input class="homey-form-input" id="hassOnlineMessage" type="text" onblur="saveSettings()">
-
-                        <label class="homey-form-label" for="hassOfflineMessage" data-i18n="tab1.hassOfflineMessage">Offline message</label>
-                        <input class="homey-form-input" id="hassOfflineMessage" type="text" onblur="saveSettings()">
-                    </fieldset>
+                    <div class="setting">
+                        <label class="settings-item-description" data-i18n="tab1.topic">Topic</label>
+                        <div class="settings-itemgroup">
+                            <input id="hassTopic" type="text" onblur="saveSettings(true)">
+                        </div>
+                    </div>
+                    <div class="setting">
+                        <label class="settings-item-description" data-i18n="tab1.hassStatusTopic">Status topic</label>
+                        <div class="settings-itemgroup">
+                            <input id="hassStatusTopic" type="text" onblur="saveSettings()">
+                        </div>
+                    </div>
+                    <div class="setting">
+                        <label class="settings-item-description" data-i18n="tab1.hassOnlineMessage">Online message</label>
+                        <div class="settings-itemgroup">
+                            <input id="hassOnlineMessage" type="text" onblur="saveSettings()">
+                        </div>
+                    </div>
+                    <div class="setting">
+                        <label class="settings-item-description" data-i18n="tab1.hassOfflineMessage">Offline message</label>
+                        <div class="settings-itemgroup">
+                            <input id="hassOfflineMessage" type="text" onblur="saveSettings()">
+                        </div>
+                    </div>
                 </div>
 
                 <!-- System State -->
-                <header class="homey-header _homey-header">
-                    <h1 class="homey-title" data-i18n="tab1.systemState">System State</h1>
-                </header>
-                <fieldset class="homey-form-fieldset">
-                    <label class="homey-form-checkbox">
-                        <input class="homey-form-checkbox-input" id="broadcastSystemState" type="checkbox" onclick="saveSettings()"/>
-                        <span class="homey-form-checkbox-checkmark"></span>
-                        <span class="homey-form-checkbox-text"><span data-i18n="tab1.broadcastSystem">Publish system state in a 30sec. interval</span></span>
-                    </label>
-                </fieldset>
-
+                <div data-i18n="tab1.systemState" class="text-header">System State</div>
+                <div class="setting">
+                    <label class="settings-item-description" data-i18n="tab1.broadcastSystemState">Publish messages containing the current system state in a regular interval (30 sec.)</label>
+                    <div class="settings-itemgroup">
+                        <div class="settings-item-text">
+                            <span data-i18n="tab1.broadcastSystem">Broadcast system state</span>
+                        </div>
+                        <div class="settings-item-last">
+                            <label class="form-switch">
+                                <input id="broadcastSystemState" type="checkbox" onclick="saveSettings()">
+                                <i></i>
+                            </label>
+                        </div>
+                    </div>
+                </div>
                 <div id="systemStateSettings" style="display:none">
-                    <fieldset class="homey-form-fieldset">
-                        <label class="homey-form-label" for="systemStateTopic" data-i18n="tab1.topic">Topic</label>
-                        <input class="homey-form-input" id="systemStateTopic" type="text" onblur="saveSettings(true)">
-                    </fieldset>
+                    <div class="setting">
+                        <label class="settings-item-description" data-i18n="tab1.topic">Topic</label>
+                        <div class="settings-itemgroup">
+                            <input id="systemStateTopic" type="text" onblur="saveSettings(true)">
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Commands -->
-                <header class="homey-header _homey-header">
-                    <h1 class="homey-title" data-i18n="tab1.commands">Commands</h1>
-                </header>
-                <fieldset class="homey-form-fieldset">
-                    <label class="homey-form-checkbox">
-                        <input class="homey-form-checkbox-input" id="commands" type="checkbox" onclick="saveSettings()"/>
-                        <span class="homey-form-checkbox-checkmark"></span>
-                        <span class="homey-form-checkbox-text"><span data-i18n="tab1.commandsListen">Listen to commands</span></span>
-                    </label>
-                </fieldset>
-
+                <div data-i18n="tab1.commands" class="text-header">Commands</div>
+                <div class="setting">
+                    <label class="settings-item-description" data-i18n="tab1.commandsListen">Listen to commands</label>
+                    <div class="settings-itemgroup">
+                        <div class="settings-item-text">
+                            <span data-i18n="tab1.commands">Commands</span>
+                        </div>
+                        <div class="settings-item-last">
+                            <label class="form-switch">
+                                <input id="commands" type="checkbox" onclick="saveSettings()">
+                                <i></i>
+                            </label>
+                        </div>
+                    </div>
+                </div>
                 <div id="commandsSettings" style="display:none">
-                    <fieldset class="homey-form-fieldset">
-                        <label class="homey-form-label" for="commandTopic" data-i18n="tab1.topic">Topic</label>
-                        <input class="homey-form-input" id="commandTopic" type="text" onblur="saveSettings()">
-                    </fieldset>
+                    <div class="setting">
+                        <label class="settings-item-description" data-i18n="tab1.topic">Topic</label>
+                        <div class="settings-itemgroup">
+                            <input id="commandTopic" type="text" onblur="saveSettings()">
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Birth & last will -->
-                <header class="homey-header _homey-header">
-                    <h1 class="homey-title" data-i18n="tab1.birthWill">Birth & last will</h1>
-                </header>
-                <fieldset class="homey-form-fieldset">
-                    <label class="homey-form-checkbox">
-                        <input class="homey-form-checkbox-input" id="birthWill" type="checkbox" onclick="saveSettings()"/>
-                        <span class="homey-form-checkbox-checkmark"></span>
-                        <span class="homey-form-checkbox-text"><span data-i18n="tab1.birthWillMessages">Send birth & last will messages</span></span>
-                    </label>
-                </fieldset>
-
+                <div data-i18n="tab1.birthWill" class="text-header">Birth & last will</div>
+                <div class="setting">
+                    <label class="settings-item-description" data-i18n="tab1.publish">Publish</label>
+                    <div class="settings-itemgroup">
+                        <div class="settings-item-text">
+                            <span data-i18n="tab1.birthWillMessages">Send birth & last will messages</span>
+                        </div>
+                        <div class="settings-item-last">
+                            <label class="form-switch">
+                                <input id="birthWill" type="checkbox" onclick="saveSettings()">
+                                <i></i>
+                            </label>
+                        </div>
+                    </div>
+                </div>
                 <div id="birthWillSettings" style="display:none">
-                    <fieldset class="homey-form-fieldset">
-                        <label class="homey-form-label" for="birthTopic" data-i18n="tab1.birthTopic">Birth topic</label>
-                        <input class="homey-form-input" id="birthTopic" type="text" onblur="saveSettings()">
-
-                        <label class="homey-form-label" for="birthMessage" data-i18n="tab1.birthMessage">Birth message</label>
-                        <input class="homey-form-input" id="birthMessage" type="text" onblur="saveSettings()">
-
-                        <label class="homey-form-label" for="willTopic" data-i18n="tab1.willTopic">Last will topic</label>
-                        <input class="homey-form-input" id="willTopic" type="text" onblur="saveSettings()">
-
-                        <label class="homey-form-label" for="willMessage" data-i18n="tab1.willMessage">Last will message</label>
-                        <input class="homey-form-input" id="willMessage" type="text" onblur="saveSettings()">
-                    </fieldset>
+                    <div class="setting">
+                        <label class="settings-item-description" data-i18n="tab1.birthTopic">Birth topic</label>
+                        <div class="settings-itemgroup">
+                            <input id="birthTopic" type="text" onblur="saveSettings()">
+                        </div>
+                    </div>
+                    <div class="setting">
+                        <label class="settings-item-description" data-i18n="tab1.birthMessage">Birth message</label>
+                        <div class="settings-itemgroup">
+                            <input id="birthMessage" type="text" onblur="saveSettings()">
+                        </div>
+                    </div>
+                    <div class="setting">
+                        <label class="settings-item-description" data-i18n="tab1.willTopic">Last will topic</label>
+                        <div class="settings-itemgroup">
+                            <input id="willTopic" type="text" onblur="saveSettings()">
+                        </div>
+                    </div>
+                    <div class="setting">
+                        <label class="settings-item-description" data-i18n="tab1.willMessage">Last will message</label>
+                        <div class="settings-itemgroup">
+                            <input id="willMessage" type="text" onblur="saveSettings()">
+                        </div>
+                    </div>
                 </div>
 
                 <!--Devices -->
-                <header class="homey-header _homey-header">
-                    <h1 class="homey-title" data-i18n="tab1.devices">Devices</h1>
-                </header>
-                <fieldset class="homey-form-fieldset">
-                    <label class="homey-form-checkbox">
-                        <input class="homey-form-checkbox-input" id="devicesDefaultState" type="checkbox" onclick="saveSettings()"/>
-                        <span class="homey-form-checkbox-checkmark"></span>
-                        <span class="homey-form-checkbox-text"><span data-i18n="tab1.devicesDefaultState">Set devices active by default</span></span>
-                    </label>
-                </fieldset>
+                <div data-i18n="tab1.devices" class="text-header">Devices</div>
+                <div id="devicesSettings">
+                    <div class="setting">
+                        <label class="settings-item-description" data-i18n="tab1.devicesDefaultState">Devices default state</label>
+                        <div class="settings-itemgroup">
+                            <div class="settings-item-text">
+                                <span data-i18n="tab1.devicesDefaultState">Devices default state</span>
+                            </div>
+                            <div class="settings-item-last">
+                                <label class="form-switch">
+                                    <input id="devicesDefaultState" type="checkbox" onclick="saveSettings()">
+                                    <i></i>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 
                 <!--Performance -->
-                <header class="homey-header _homey-header">
-                    <h1 class="homey-title" data-i18n="tab1.performance">Performance</h1>
-                </header>
-                <fieldset class="homey-form-fieldset">
-                    <label class="homey-form-label" for="performanceDelay" data-i18n="tab1.performanceDelay">Send message delay</label>
-                    <input class="homey-form-input" id="performanceDelay" type="text" onblur="saveSettings()">
-                </fieldset>
+                <div data-i18n="tab1.performance" class="text-header">Performance</div>
+                <div id="performanceSettings">
+                    <div class="setting">
+                        <label class="settings-item-description" data-i18n="tab1.performanceDelay">Send message delay</label>
+                        <div class="settings-itemgroup">
+                            <input id="performanceDelay" type="text" onblur="saveSettings()">
+                        </div>
+                    </div>
+                </div>
 
                 <!--Reset -->
-                <header class="homey-header _homey-header">
-                    <h1 class="homey-title" data-i18n="tab1.reset">Reset</h1>
-                </header>
-                <fieldset class="homey-form-fieldset">
-                    <button class="homey-button-danger-shadow-full" id="resetButton" @click="reset()" data-i18n="tab1.restoreSettings">
-                        Restore default settings
-                    </button>
-                </fieldset>
+                <div data-i18n="tab1.reset" class="text-header">Reset</div>
+                <div class="setting">
+                    <label class="settings-item-description" data-i18n="tab1.defaultSettings"></label>
+                    <button id="resetButton" class="btn" @click="reset()" data-i18n="tab1.restoreSettings">Restore default settings</button>
+                </div>
 
             </div>
             <div id="tab2" class="panel" style="display: none;">
@@ -255,41 +349,33 @@
                 <!--Device filter/sort -->
                 <div id="devicesFilterSettings">
                     <div class="setting">
-                        <fieldset class="homey-form-fieldset">
-                            <table style="width:100%">
-                                <tr>
-                                    <td>                        
-                                        <label class="homey-form-label" for="devicesFilterText" data-i18n="tab2.filter">Search for devices</label>
-                                        <input class="homey-form-input" id="devicesFilterText" type="text" oninput="updateDevices()">
-                                        <!-- <label class="settings-item-description" data-i18n="tab2.filter">Search for devices</label>
-                                        <div class="settings-itemgroup">
-                                            <input id="devicesFilterText" type="text" oninput="updateDevices()">
-                                        </div> -->
-                                    </td>
-                                    <td>
-                                        <label class="homey-form-label" for="colorFormat" data-i18n="tab2.sort">Sort devices</label>
-                                        <select class="homey-form-select" id="deviceSort" onchange="updateDevices()">
+                        <table style="width:100%">
+                            <tr>
+                                <td>                        
+                                    <label class="settings-item-description" data-i18n="tab2.filter">Search for devices</label>
+                                    <div class="settings-itemgroup">
+                                        <input id="devicesFilterText" type="text" oninput="updateDevices()">
+                                    </div>
+                                </td>
+                                <td>
+                                    <label class="settings-item-description" data-i18n="tab2.sort">Sort devices</label>
+                                    <div class="settings-itemgroup">
+                                        <!-- <input id="devicesSort" type="text" oninput="updateDevices()"> -->
+                                        <select id="deviceSort" onchange="updateDevices()">
                                             <option value="device" selected="selected">Device name</option>
                                             <option value="zone_device">Zone & Device name</option>
                                             <option value="time_adding">Time of adding</option>
+                                            <!-- <option value="first">First added</option>
+                                            <option value="last">Last added</option> -->
                                         </select>
-
-                                        <!-- <label class="settings-item-description" data-i18n="tab2.sort">Sort devices</label>
-                                        <div class="settings-itemgroup">
-                                            <select id="deviceSort" onchange="updateDevices()">
-                                                <option value="device" selected="selected">Device name</option>
-                                                <option value="zone_device">Zone & Device name</option>
-                                                <option value="time_adding">Time of adding</option>
-                                            </select>
-                                        </div> -->
-                                    </td>
-                                </tr>
-                            </table>
-                        </fieldset>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
                     </div>
                 </div>
                 <div class="rTable">
-                    <!-- <div class="rTableRow devices" v-for="device in devices">
+                    <div class="rTableRow devices" v-for="device in devices">
 
                         <div class="rTableCell line">
                             <div class="icon-cell" v-html="getIcon(device)"></div>
@@ -304,27 +390,6 @@
                                 <i></i>
                             </label>
                         </div>
-                    </div> -->
-                    <div class="rTableRow line" v-for="device in devices">
-
-                        <div class="rTableCell line">
-                            <div class="icon-cell" v-html="getIcon(device)"></div>
-                        </div>
-                        <div class="rTableCell line scrollable-text">
-                            {{ getZone(device) }}<br />
-                            <b>{{device.name}}</b>
-                        </div>
-                        <div class="rTableCell line settings-item-last">
-                            <label>
-                                <input class="homey-form-checkbox-input" id="devicesDefaultState" type="checkbox" :checked="deviceEnabled(device)" @click="saveDevice(device, $event.target.checked)"/>
-                                <span class="homey-form-checkbox-checkmark"></span>
-                                <!-- <span class="homey-form-checkbox-text"><span data-i18n="tab1.devicesDefaultState">Set devices active by default</span></span> -->
-                            </label>
-                                    <!-- <label class="form-switch">
-                                <input type="checkbox" class="homey-form-checkbox-input" :checked="deviceEnabled(device)" @click="saveDevice(device, $event.target.checked)">
-                                <i></i>
-                            </label> -->
-                        </div>
                     </div>
                 </div>
             </div>
@@ -335,11 +400,7 @@
                         <br />With this app you can communicate with all your devices connected to Homey. A communication channel per device will be created, so external apps can find and control each one of them.
                     </p>
 
-                    <!-- <div class="text-header">INSTALLATION</div> -->
-                    <header class="homey-header _homey-header">
-                        <h1 class="homey-title">INSTALLATION</h1>
-                    </header>
-
+                    <div class="text-header">INSTALLATION</div>
                     <p>
                         <br />To configure the MQTT Hub you have to do the following:
                     </p>
@@ -404,11 +465,7 @@
                     </ol>
 
 
-                    <!-- <div class="text-header">CONFIGURATION</div> -->
-                    <header class="homey-header _homey-header">
-                        <h1 class="homey-title">CONFIGURATION</h1>
-                    </header>
-
+                    <div class="text-header">CONFIGURATION</div>
                     <p>
                         <br />General MQTT Hub configuration.
                     </p>
@@ -435,12 +492,7 @@
                             </li>
                         </ul>
                     </ul>
-
-                    <!-- <div class="text-header">Homie Convention</div> -->
-                    <header class="homey-header _homey-header">
-                        <h1 class="homey-title">Homie Convention</h1>
-                    </header>
-
+                    <div class="text-header">Homie Convention</div>
                     <p>
                         <br />Configure the communication via the Homie Convention (v3.0.1).
                     </p>
@@ -453,11 +505,7 @@
                         </ul>
                     </ul>
 
-                    <!-- <div class="text-header">CUSTOM</div> -->
-                    <header class="homey-header _homey-header">
-                        <h1 class="homey-title">CUSTOM</h1>
-                    </header>
-
+                    <div class="text-header">CUSTOM</div>
                     <p>
                         <br />Configure the MQTT communication to your needs.
                     </p>
@@ -527,11 +575,7 @@
                         </ul>
                     </ul>
 
-                    <!-- <div class="text-header">HOME ASSISTANT DISCOVERY</div> -->
-                    <header class="homey-header _homey-header">
-                        <h1 class="homey-title">HOME ASSISTANT DISCOVERY</h1>
-                    </header>
-
+                    <div class="text-header">HOME ASSISTANT DISCOVERY</div>
                     <p>
                         <br />Discovery can be enabled to ease integration with Home Assistant. All your devices will automatically become available within HA.
                     </p>
@@ -572,11 +616,7 @@
                         </ul>
                     </ul>
 
-                    <!-- <div class="text-header">SYSTEM STATE</div> -->
-                    <header class="homey-header _homey-header">
-                        <h1 class="homey-title">SYSTEM STATE</h1>
-                    </header>
-
+                    <div class="text-header">SYSTEM STATE</div>
                     <p>
                         <br />The system state broadcaster publishes the current state (CPU, memory, workload, etc.) of your Homey in a regular interval of 30 sec.
                     </p>
@@ -596,11 +636,7 @@
                         </ul>
                     </ul>
 
-                    <!-- <div class="text-header">COMMANDS</div> -->
-                    <header class="homey-header _homey-header">
-                        <h1 class="homey-title">COMMANDS</h1>
-                    </header>
-
+                    <div class="text-header">COMMANDS</div>
                     <p>
                         <br />Control your Homey by sending commands to the command topic.
                     </p>
@@ -626,11 +662,7 @@
                         </ul>
                     </ul>
 
-                    <!-- <div class="text-header">BIRTH & LAST WILL</div> -->
-                    <header class="homey-header _homey-header">
-                        <h1 class="homey-title">BIRTH & LAST WILL</h1>
-                    </header>
-
+                    <div class="text-header">BIRTH & LAST WILL</div>
                     <p>
                         <br />Broadcast a 'birth' message on MQTT Hub startup and a 'last will' message on shutdown.
                     </p>
@@ -656,11 +688,7 @@
                         </ul>
                     </ul>
 
-                    <!-- <div class="text-header">RESET</div> -->
-                    <header class="homey-header _homey-header">
-                        <h1 class="homey-title">RESET</h1>
-                    </header>
-
+                    <div class="text-header">RESET</div>
                     <p>
                         <br />Reset all settings.
                     </p>
@@ -676,11 +704,7 @@
                         </ul>
                     </ul>
 
-                    <!-- <div class="text-header">DEVICES</div> -->
-                    <header class="homey-header _homey-header">
-                        <h1 class="homey-title">DEVICES</h1>
-                    </header>
-
+                    <div class="text-header">DEVICES</div>
                     <p>
                         <br />Configure which devices are included in the MQTT Hub.
                     </p>
@@ -703,18 +727,12 @@
                 <div class="setting">
                     <label class="loglevel" data-i18n="tab4.loglevel">Log level</label>
                     <div class="settings-itemgroup">
-                        <select class="homey-form-select" id="loglevel" @change="setLogLevel($event.target.value)">
+                        <select id="loglevel" @change="setLogLevel($event.target.value)">
                             <option value="off">Turned off</option>
                             <option value="error">Errors and Warnings</option>
                             <option value="info" selected="selected">Information</option>
                             <option value="debug">Debug</option>
                         </select>
-                        <!-- <select id="loglevel" @change="setLogLevel($event.target.value)">
-                            <option value="off">Turned off</option>
-                            <option value="error">Errors and Warnings</option>
-                            <option value="info" selected="selected">Information</option>
-                            <option value="debug">Debug</option>
-                        </select> -->
                     </div>
                 </div>
                 <div v-html="log"></div>
