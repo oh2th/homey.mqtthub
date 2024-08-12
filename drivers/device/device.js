@@ -146,7 +146,11 @@ class MQTTDevice extends Homey.Device {
         for (let newId of newIds) {
             if(!oldIds.has(newId)) {
                 await this.addCapability(newId);
-            } 
+            }
+            // add capability title as standard capabilityOption "title"
+            if (capabilities[newId]["displayName"]){
+                capabilities[newId]["title"] = capabilities[newId]["displayName"];
+            }
             await this.setCapabilityOptions(newId, capabilities[newId]);
         }
     }

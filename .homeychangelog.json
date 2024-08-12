@@ -100,5 +100,8 @@
   },
   "4.1.3": {
     "en": "Converted app settings view to Homey style."
+  },
+  "4.1.4": {
+    "en": "Fixed missing title after changing settings for MQTT device."
   }
 }
