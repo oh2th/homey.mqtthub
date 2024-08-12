@@ -489,7 +489,7 @@ class HomieDispatcher {
     _convertDataType(capability) {
 
         // percentage
-        if (capability.units === '%') {
+        if (capability.units === '%' || capability.id === 'dim') {
             switch (this.percentageScale) {
                 case 'int':
                     if (capability.min === 0 && capability.max === 1)
@@ -547,7 +547,7 @@ class HomieDispatcher {
         if (capability.min !== undefined && capability.max !== undefined) {
 
             // catch percentage
-            if (capability.units === '%') {
+            if (capability.units === '%' || capability.id === 'dim') {
                 switch (this.percentageScale) {
                     case 'int':
                         if (capability.min === 0 && capability.max === 1)
@@ -769,7 +769,7 @@ class HomieDispatcher {
             return value ? 'true' : 'false';
         }
 
-        if (capability.units === '%') {
+        if (capability.units === '%'  || capability.id === 'dim') {
             switch (this.percentageScale) {
                 case 'int':
                     if (capability.min === 0 && capability.max === 1)
@@ -792,7 +792,7 @@ class HomieDispatcher {
     _parseValue(value, dataType, capability) {
 
         // Handle percentage scaling
-        if (capability && capability.units === '%') {
+        if (capability && ( capability.units === '%'  || capability.id === 'dim' )) {
             switch (this.percentageScale) {
                 case 'int':
                     if (capability.min === 0 && capability.max === 1)

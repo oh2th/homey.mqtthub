@@ -103,5 +103,8 @@
   },
   "4.1.4": {
     "en": "Fixed missing title after changing settings for MQTT device."
+  },
+  "4.1.5": {
+    "en": "Added workaround for wrong dim unit (norwegian)."
   }
 }
