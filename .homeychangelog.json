@@ -106,5 +106,8 @@
   },
   "4.1.5": {
     "en": "Added workaround for wrong dim unit (norwegian)."
+  },
+  "4.1.6": {
+    "en": "Added workaround for wrong dim unit (norwegian)."
   }
 }
