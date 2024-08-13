@@ -1,4 +1,4 @@
-<link rel="stylesheet" type="text/css" href="../../../assets/styles.css" />
+<!-- <link rel="stylesheet" type="text/css" href="../../../assets/styles.css" /> -->
 <link rel="stylesheet" type="text/css" href="./styles.css" />
 <script src='../../../assets/vue.min.js'></script>
 <script src='../../../assets/lodash.min.js'></script>
@@ -38,6 +38,29 @@
     });
 </script>
 
+
+<div id="device">
+    <div class="setting">
+        <fieldset class="homey-form-fieldset">
+            <!-- <legend class="homey-form-legend">Login data</legend>   -->
+            <div class="homey-form-group">
+                <label class="homey-form-label" data-i18n="pair.select.name">Device name</label>
+                <input class="homey-form-input" type="text" v-model="name" />
+            </div>
+            <div class="homey-form-group">
+                <label class="homey-form-label" data-i18n="pair.select.class">Select a device class</label>
+                <select class="homey-form-select" v-model="deviceClass" v-if="deviceClasses">
+                    <option :value="item.class" v-for="item of sorted">
+                            {{item.device.title.en}}
+                    </option>
+                </select>
+                <label class="homey-form-label">{{ deviceClass && deviceClasses && deviceClasses[deviceClass] ? deviceClasses[deviceClass].description.en : ''}}</label>
+        </fieldset>
+    </div>
+</div>
+
+
+<!-- 
 <div id="device">
     <div class="setting">
         <label class="settings-item-description" data-i18n="pair.select.name">-Device name-</label>
@@ -60,4 +83,4 @@
     <div class="setting">
         <p>{{ deviceClass && deviceClasses && deviceClasses[deviceClass] ? deviceClasses[deviceClass].description.en : ''}}</p>
     </div>
-</div>
+</div> -->

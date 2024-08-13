@@ -109,5 +109,8 @@
   },
   "4.1.6": {
     "en": "Added workaround for wrong dim unit (norwegian)."
+  },
+  "4.1.7": {
+    "en": "Converted Mqtt device pair view to Homey style."
   }
 }

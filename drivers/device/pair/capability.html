@@ -1,4 +1,4 @@
-<link rel="stylesheet" type="text/css" href="../../../assets/styles.css" />
+<!-- <link rel="stylesheet" type="text/css" href="../../../assets/styles.css" /> -->
 <link rel="stylesheet" type="text/css" href="./styles.css" />
 <script src='../../../assets/vue.min.js'></script>
 <script src='../../../assets/lodash.min.js'></script>
@@ -122,9 +122,9 @@
 
 <div id="capability" v-if="capabilities">
     <div class="setting">
-        <label class="settings-item-description">{{__('pair.select.capability')}}</label>
+        <label class="homey-form-label">{{__('pair.select.capability')}}</label>
         <div class="settings-itemgroup">
-            <select v-model="capability" v-if="capabilities">
+            <select class="homey-form-select" v-model="capability" v-if="capabilities">
                 <option :value="item.id" v-for="item of sorted">
                     {{item.title}} ({{item.unit}})
                 </option>
@@ -132,7 +132,7 @@
         </div>
     </div>
     <div class="setting" v-if="capability">
-        <label class="settings-item-description">{{__('pair.select.capability_details')}}</label>
+        <label class="homey-form-label">{{__('pair.select.capability_details')}}</label>
         <div class="settings-itemgroup capability-details">
             <div>
                 <span class="details-label">id:</span><span class="details-value">{{capability}}</span>
@@ -157,40 +157,42 @@
     </div>
 
     <div class="setting" v-if="capability">
-        <label class="settings-item-description">{{__('pair.default.topic.name')}}</label>
+        <label class="homey-form-label">{{__('pair.default.topic.name')}}</label>
         <div class="settings-itemgroup">
-            <input type="text" v-model="displayName">
+            <input class="homey-form-input" type="text" v-model="displayName">
         </div>
     </div>
 
-    <div class="section" v-if="capability && capabilities[capability].getable">
-        <h3 class="sub-header">{{__('pair.default.topic.input')}}</h3>
+    <div v-if="capability && capabilities[capability].getable">
+        <!-- <h3 class="sub-header">{{__('pair.default.topic.input')}}</h3> -->
+        <!-- <legend class="homey-form-legend">{{__('pair.default.topic.input')}}</legend> -->
         <div class="setting" >
-            <label class="settings-item-description">{{__('pair.default.topic.state')}}</label>
+            <label class="homey-form-label">{{__('pair.default.topic.state')}}</label>
             <div class="settings-itemgroup">
-                <input type="text" v-model="stateTopic">
+                <input class="homey-form-input" type="text" v-model="stateTopic">
             </div>
         </div>
         <div class="setting">
-            <label class="settings-item-description">{{__('pair.default.topic.value_template')}}</label>
+            <label class="homey-form-label">{{__('pair.default.topic.value_template')}}</label>
             <div class="settings-itemgroup">
-                <input type="text" v-model="valueTemplate">
+                <input class="homey-form-input" type="text" v-model="valueTemplate">
             </div>
         </div>
     </div>
 
-    <div class="section" v-if="capability && capabilities[capability].setable">
-        <h3 class="sub-header">{{__('pair.default.topic.output')}}</h3>
+    <div v-if="capability && capabilities[capability].setable">
+        <!-- <h3 class="sub-header">{{__('pair.default.topic.output')}}</h3> -->
+        <!-- <legend class="homey-form-legend">{{__('pair.default.topic.output')}}</legend> -->
         <div class="setting">
-            <label class="settings-item-description">{{__('pair.default.topic.set')}}</label>
+            <label class="homey-form-label">{{__('pair.default.topic.set')}}</label>
             <div class="settings-itemgroup">
-                <input type="text" v-model="setTopic">
+                <input class="homey-form-input" type="text" v-model="setTopic">
             </div>
         </div>
         <div class="setting">
-            <label class="settings-item-description">{{__('pair.default.topic.output_template')}}</label>
+            <label class="homey-form-label">{{__('pair.default.topic.output_template')}}</label>
             <div class="settings-itemgroup">
-                <input type="text" v-model="outputTemplate">
+                <input class="homey-form-input" type="text" v-model="outputTemplate">
             </div>
         </div>
     </div>

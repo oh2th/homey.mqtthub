@@ -1,4 +1,4 @@
-<link rel="stylesheet" type="text/css" href="../../../assets/styles.css" />
+<!-- <link rel="stylesheet" type="text/css" href="../../../assets/styles.css" /> -->
 <link rel="stylesheet" type="text/css" href="./styles.css" />
 <script src='../../../assets/vue.min.js'></script>
 <script src='../../../assets/lodash.min.js'></script>
@@ -56,7 +56,40 @@
     });
 </script>
 
+<style>
+    .button_delete {
+        margin-left: 10px;
+        max-width: 60px;
+        height: 48px;
+    }
+    .button_capability {
+        float:left;max-width:calc(100% - 70px);text-align: left;
+    }
+</style>
+
 <div id="capabilities">
+    <button class="homey-button-primary-full visible" @click="addCapability($event)">
+        <i class="fa fa-plus"></i>&nbsp;
+        <span data-i18n="pair.select.add">Add capability</span>
+    </button>
+
+
+    <div class="setting" v-if="capabilities && device && device.capabilities.length">
+        <label class="homey-form-label" data-i18n="pair.select.capabilities">{{__('pair.select.capabilities')}}</label>
+        <div class="capabilities">
+            <div class="capability" v-for="capability of device.capabilities" style="clear:both; padding:5px 0">
+                <button class="homey-button-primary-full button_capability visible" @click="editCapability(capability)">
+                    <span>{{ getTitle(capability) }}</span>
+                </button>
+                <button class="homey-button-danger-shadow button_delete button_delete visible" @click="removeCapability(capability)" style="max-width:50px">
+                    <i class="fa fa-trash"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- <div id="capabilities">
     <button class="hy-button visible" @click="addCapability($event)">
         <i class="fa fa-plus"></i>&nbsp;
         <span data-i18n="pair.select.add">Add capability</span>
@@ -75,9 +108,9 @@
                 </button>
             </div>
         </div>
-    </div>
+    </div> -->
     <!--<div class="setting">
         <p v-if="device.capabilities.length === 0" data-i18n="pair.select.empty">-No capabilities added yet... -</p>
     </div>-->
+<!-- </div> -->
 
-</div>
