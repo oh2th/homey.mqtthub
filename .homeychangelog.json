@@ -112,5 +112,8 @@
   },
   "4.1.7": {
     "en": "Converted Mqtt device pair view to Homey style."
+  },
+  "4.1.8": {
+    "en": "Converted Homey device pair view to Homey style."
   }
 }

@@ -1,4 +1,4 @@
-<link rel="stylesheet" type="text/css" href="../../../assets/styles.css" />
+<!-- <link rel="stylesheet" type="text/css" href="../../../assets/styles.css" /> -->
 <link rel="stylesheet" type="text/css" href="./discover.css" />
 <script src='../../../assets/vue.min.js'></script>
 <script src='../../../assets/lodash.min.js'></script>
@@ -123,15 +123,15 @@
             </div>
             <div class="capabilities" v-if="node.open">
                 <div class="setting">
-                    <label class="settings-item-description">{{__('pair.select.name')}}</label>
+                    <label class="homey-form-label">{{__('pair.select.name')}}</label>
                     <div class="settings-itemgroup">
-                        <input type="text" v-model="node.deviceName">
+                        <input class="homey-form-input" type="text" v-model="node.deviceName">
                     </div>
                 </div>
                 <div class="setting">
-                    <label class="settings-item-description">{{__('pair.select.class')}}</label>
+                    <label class="homey-form-label">{{__('pair.select.class')}}</label>
                     <div class="settings-itemgroup">
-                        <select v-model="node.deviceClass">
+                        <select class="homey-form-select" v-model="node.deviceClass">
                             <option :value="item.id" v-for="item of deviceClasses">
                                 {{item.title[lang]}}
                             </option>
@@ -140,9 +140,9 @@
                 </div>
                 <div class="capability" v-for="(property, propertyId) in node.properties">
                     <div class="setting">
-                        <label class="settings-item-description">{{property.name}}</label>
+                        <label class="homey-form-label">{{property.name}}</label>
                         <div class="settings-itemgroup">
-                            <select v-model="property.capabilityId">
+                            <select class="homey-form-select" v-model="property.capabilityId">
                                 <option value="">{{__('pair.discovery.selectCapability')}}</option>
                                 <option :value="item.id" v-for="item of capabilities">
                                     {{item.title[lang] + (item.id ? ` (${item.id})` : '')}}
@@ -151,7 +151,7 @@
                         </div>
                     </div>
                 </div>
-                <button class="hy-button visible create-button" @click="createDevice(node)">
+                <button class="homey-button-primary-full visible create-button" @click="createDevice(node)">
                     <i class="fa fa-plus"></i>&nbsp;
                     <span>{{__('pair.discovery.add')}}</span>
                 </button>

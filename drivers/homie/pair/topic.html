@@ -1,4 +1,4 @@
-<link rel="stylesheet" type="text/css" href="../../../assets/styles.css" />
+<!-- <link rel="stylesheet" type="text/css" href="../../../assets/styles.css" /> -->
 <script src='../../../assets/vue.min.js'></script>
 <script src='../../../assets/lodash.min.js'></script>
 <script>
@@ -27,11 +27,11 @@
     <div class="setting">
         <label class="settings-item-description" data-i18n="pair.discovery.homieTopic">-Homie Discovery Topic-</label>
         <div class="settings-itemgroup">
-            <input type="text" v-model="topic" :placeholder="DEFAULT_TOPIC">
+            <input class="homey-form-input" type="text" v-model="topic" :placeholder="DEFAULT_TOPIC">
         </div>
     </div>
 
-    <button class="hy-button visible" v-if="!!topic" @click="discover()" style="margin-top:25px !important;">
+    <button class="homey-button-primary-full visible" v-if="!!topic" @click="discover()" style="margin-top:25px !important;">
         <i class="fa fa-search"></i>&nbsp;
         <span>{{__('pair.discovery.start')}}</span>
     </button>
