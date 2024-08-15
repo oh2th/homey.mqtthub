@@ -30,6 +30,11 @@ module.exports = {
         return await homey.app.refresh();
     },
 
+    // Restart Hub
+    async restart({ homey }) {
+        return await homey.app.restart();
+    },
+    
     // Settings changed
     async getSettingsChanged({ homey }) {
         return await homey.app.settingsChanged();

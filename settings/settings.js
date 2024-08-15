@@ -19,6 +19,7 @@ const defaultSettings = {
     "deviceId": '',
     "protocol": "homie3",
     "homieTopic": "homie/{deviceId}",
+    "capabilityName": "dev_cap",
 
     "customTopic": "homie/{deviceId}",
     "topicIncludeClass": false,
@@ -137,7 +138,7 @@ function onHomeyReady(homeyReady){
         methods: {
             getZones() {
                 return Homey.api('GET', '/zones', null, (err, result) => {
-                    if (err) return Homey.alert('getZones ' + err);
+                    if (err) return; //Homey.alert('getZones ' + err);
                     this.zones = result;
                     this.zones['___hub'] = { id: '___hub', name: 'MQTT Hub', "order": 0 };
                 });
@@ -145,7 +146,7 @@ function onHomeyReady(homeyReady){
             getDevices() {
                 return Homey.api('GET', '/devices', null, (err, result) => {
                     loading = false;
-                    if (err) return Homey.alert('getDevices ' + err);
+                    if (err) return; //Homey.alert('getDevices ' + err);
                     devices = Object.keys(result).map(key => result[key]);
                     devices.unshift(ALL_DEVICES);
 
@@ -213,12 +214,33 @@ function onHomeyReady(homeyReady){
                 }
             },
             refresh: function () {
-                $("#refreshButton").prop("disabled", true);
+                // $("#refreshButton").prop("disabled", true);
+                document.getElementById('refreshButton').classList.add("is-loading");
+                document.getElementById('refreshButton').classList.add("is-disabled");
                 setTimeout(() => {
                     Homey.api('GET', '/refresh', null, (err, result) => {
-                        $("#refreshButton").prop("disabled", false);
+                        // $("#refreshButton").prop("disabled", false);
+                        document.getElementById('refreshButton').classList.remove("is-loading");
+                        document.getElementById('refreshButton').classList.remove("is-disabled");
                         if (err) {
                             Homey.alert('Failed to refresh device states');
+                        }
+                        //Homey.alert(err ? 'failed to refresh device states' : 'refreshed sucessfully');
+                    });
+                }, 0);
+                
+            },
+            restart: function () {
+                // $("#restartButton").prop("disabled", true);
+                document.getElementById('restartButton').classList.add("is-loading");
+                document.getElementById('restartButton').classList.add("is-disabled");
+                setTimeout(() => {
+                    Homey.api('GET', '/restart', null, (err, result) => {
+                        // $("#restartButton").prop("disabled", false);
+                        document.getElementById('restartButton').classList.remove("is-loading");
+                        document.getElementById('restartButton').classList.remove("is-disabled");
+                        if (err) {
+                            Homey.alert('Failed to restart Hub');
                         }
                         //Homey.alert(err ? 'failed to refresh device states' : 'refreshed sucessfully');
                     });
@@ -368,6 +390,7 @@ function updateInterface() {
     $('#systemStateSettings').toggle(hubSettings.broadcastSystemState);
     $('#commandsSettings').toggle(hubSettings.commands);
     $('#birthWillSettings').toggle(hubSettings.birthWill);
+    $('#birthWillSettings').toggle(hubSettings.birthWill);
 }
 
 function saveSettings(broadcast, write) {
@@ -384,6 +407,11 @@ function saveSettings(broadcast, write) {
     updateInterface();
     
     _writeSettings();
+
+    // Restart Hub to initialize devices and broadcast Homie and HA discovery based on changed settings
+    if (broadcast){
+        $app.restart();
+    }
 }
 
 function _writeSettings() {

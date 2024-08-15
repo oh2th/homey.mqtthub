@@ -114,6 +114,9 @@
     "en": "Converted Mqtt device pair view to Homey style."
   },
   "4.1.8": {
-    "en": "Converted Homey device pair view to Homey style."
+    "en": "Converted Homie device pair view to Homey style."
+  },
+  "4.2.0": {
+    "en": "Added flow trigger for memory/cpu warnings. Added restart flow/button. Added capability name setting."
   }
 }

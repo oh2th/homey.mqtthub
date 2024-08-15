@@ -331,7 +331,19 @@ class HomieDispatcher {
                     const value = capability.value;
                     const capabilityTitle = color ? 'Color' : (capability.title && typeof capability.title === 'object') ? capability.title['en'] : capability.title;
                     const capabilityName = capabilityTitle || capability.desc || id;
-                    const name = _.replace([device.name, capabilityName].filter(x => x).join(' - '), "_", " ");
+
+                    // Fix for HomeAssistant change for device/entity names. The capability name must no longer contain the device name.
+                    // https://community.home-assistant.io/t/psa-mqtt-name-changes-in-2023-8/598099
+                    let name = '';
+                    switch (this.settings.capabilityName){
+                        case 'cap':
+                            name = _.replace(capabilityName, "_", " ");
+                            break;
+                        default: //case 'dev_cap':
+                            name = _.replace([device.name, capabilityName].filter(x => x).join(' - '), "_", " ");
+                            break;
+                        }
+
                     const dataType = this._convertDataType(capability);
 
                     if (dataType && !(colorHandled && dataType === 'color')) {

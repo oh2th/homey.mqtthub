@@ -54,6 +54,20 @@
                         Broadcast
                     </button>
                     <div id="progress"></div> 
+                    <label class="homey-form-label" for="restartButton" data-i18n="tab1.restartLabel">Restart Hub incl. device broadcast</label>
+                    <button class="homey-button-secondary-shadow-full" id="restartButton" @click="restart()" data-i18n="tab1.restartButton">
+                        Restart Hub
+                    </button>
+                </fieldset>
+
+                <!--SETTINGS -->
+                <header class="homey-header _homey-header">
+                    <h1 class="homey-title" data-i18n="tab1.settings">Settings</h1>
+                </header>
+                <fieldset class="homey-form-fieldset">
+                    <button class="homey-button-primary-shadow-full" id="saveSettingsButton" onclick="saveSettings(true)" data-i18n="tab1.saveSettings">
+                        Save settings
+                    </button>
                     <label class="homey-form-label" for="protocol" data-i18n="tab1.refresh">Publish the state of all devices</label>
                     <select class="homey-form-select" id="protocol" @change="selectProtocol($event.target.value)">
                         <option value="homie3" selected="selected">Homie Convention v3.0.1</option>
@@ -66,11 +80,11 @@
                     <header class="homey-header _homey-header">
                         <h1 class="homey-title" data-i18n="tab1.protocolHeader">Homie Convention</h1>
                     </header>
-                    <fieldset class="homey-form-fieldset">
+                    <!-- <fieldset class="homey-form-fieldset"> -->
                         <!-- <legend class="homey-form-legend" ><span data-i18n="tab1.protocolHeader">Homie Convention</span></legend> -->
                         <label class="homey-form-label" for="homieTopic" data-i18n="tab1.topic">Topic</label>
-                        <input class="homey-form-input" id="homieTopic" type="text" onblur="saveSettings(true)">
-                    </fieldset>
+                        <input class="homey-form-input" id="homieTopic" type="text"> <!--onblur="saveSettings(true)">-->
+                    <!-- </fieldset> -->
                 </div>
 
                 <!--PROTOCOL Homie Convention-->
@@ -78,43 +92,52 @@
                     <header class="homey-header _homey-header">
                         <h1 class="homey-title" data-i18n="tab1.custom">CUSTOM</h1>
                     </header>
-                    <fieldset class="homey-form-fieldset">
+                    <!-- <fieldset class="homey-form-fieldset"> -->
                         <!-- <legend class="homey-form-legend" ><span data-i18n="tab1.custom">CUSTOM</span></legend> -->
                         <label class="homey-form-label" for="customTopic" data-i18n="tab1.topic">Topic</label>
-                        <input class="homey-form-input" id="customTopic" type="text" onblur="saveSettings(true)">
+                        <input class="homey-form-input" id="customTopic" type="text">  <!-- onblur="saveSettings(true)"> -->
                         <label class="homey-form-checkbox">
-                            <input class="homey-form-checkbox-input" id="topicIncludeClass" type="checkbox" onclick="saveSettings(true)"/>
+                            <input class="homey-form-checkbox-input" id="topicIncludeClass" type="checkbox"/> <!-- onclick="saveSettings(true)"/> -->
                             <span class="homey-form-checkbox-checkmark"></span>
                             <span class="homey-form-checkbox-text"><span data-i18n="tab1.topicIncludeClass">Include device class in topic</span></span>
                         </label>
                         <label class="homey-form-checkbox">
-                            <input class="homey-form-checkbox-input" id="topicIncludeZone" disabled="disabled" type="checkbox" onclick="saveSettings(true)"/>
+                            <input class="homey-form-checkbox-input" id="topicIncludeZone" disabled="disabled" type="checkbox"/> <!-- onclick="saveSettings(true)"/> -->
                             <span class="homey-form-checkbox-checkmark"></span>
                             <span class="homey-form-checkbox-text"><span data-i18n="tab1.topicIncludeZone">Include zone in topic</span></span>
                         </label>
                         <label class="homey-form-checkbox">
-                            <input class="homey-form-checkbox-input" id="normalize" disabled="disabled" type="checkbox" onclick="saveSettings(true)"/>
+                            <input class="homey-form-checkbox-input" id="normalize" disabled="disabled" type="checkbox"/> <!-- onclick="saveSettings(true)"/> -->
                             <span class="homey-form-checkbox-checkmark"></span>
                             <span class="homey-form-checkbox-text"><span data-i18n="tab1.topicNormalize">Normalize topics (lowercase, remove characters, etc.)</span></span>
                         </label>
                         <label class="homey-form-checkbox">
-                            <input class="homey-form-checkbox-input" id="broadcastDevices" type="checkbox" onclick="saveSettings()"/>
+                            <input class="homey-form-checkbox-input" id="broadcastDevices" type="checkbox"/> <!-- onclick="saveSettings()"/> -->
                             <span class="homey-form-checkbox-checkmark"></span>
                             <span class="homey-form-checkbox-text"><span data-i18n="tab1.broadcastDevicesChanges">Publish messages for all devices state changes</span></span>
                         </label>
                         <label class="homey-form-label" for="percentageScale" data-i18n="tab1.percentageScale">Percentage scale</label>
-                        <select class="homey-form-select" id="percentageScale" @change="saveSettings(true)">
+                        <select class="homey-form-select" id="percentageScale"> <!-- @change="saveSettings(true)"> -->
                             <option value="default" selected="selected">default (original value)</option>
                             <option value="float">float (0...1)</option>
                             <option value="int">int (0...100)</option>
                         </select>
                         <label class="homey-form-label" for="colorFormat" data-i18n="tab1.colorFormat">Color format</label>
-                        <select class="homey-form-select" id="colorFormat" @change="saveSettings(true)">
+                        <select class="homey-form-select" id="colorFormat"> <!--@change="saveSettings(true)">-->
                             <option value="hsv" selected="selected">HSV (&quot;h,s,v&quot;)</option>
                             <option value="rgb">RGB (&quot;r,g,b&quot;)</option>
                             <option value="values">Single topic per HSV value (Device capabilities)</option>
+                        </select>
+                    <!-- </fieldset> -->
+                </div>
+
+                <!--PROTOCOL General settings-->
+                <div id="protocolGeneralSettings">
+                    <label class="homey-form-label" for="capabilityName" data-i18n="tab1.capabilityName">Capability name</label>
+                    <select class="homey-form-select" id="capabilityName"> <!--x @change="saveSettings(true)"> -->
+                        <option value="dev_cap" selected="selected">Device name - Capability name</option>
+                        <option value="cap">Capability name</option>
                     </select>
-                    </fieldset>
                 </div>
 
                 <!--Home Assistant -->
@@ -123,7 +146,7 @@
                 </header>
                 <fieldset class="homey-form-fieldset">
                     <label class="homey-form-checkbox">
-                        <input class="homey-form-checkbox-input" id="hass" type="checkbox" onclick="saveSettings(true)"/>
+                        <input class="homey-form-checkbox-input" id="hass" type="checkbox"/> <!-- onclick="saveSettings(true)"/> -->
                         <span class="homey-form-checkbox-checkmark"></span>
                         <span class="homey-form-checkbox-text"><span data-i18n="tab1.hass">Home Assistant Discovery (beta)</span></span>
                     </label>
@@ -132,16 +155,16 @@
                 <div id="hassSettings" style="display:none">
                     <fieldset class="homey-form-fieldset">
                         <label class="homey-form-label" for="hassTopic" data-i18n="tab1.topic">Topic</label>
-                        <input class="homey-form-input" id="hassTopic" type="text" onblur="saveSettings(true)">
+                        <input class="homey-form-input" id="hassTopic" type="text"> <!--onblur="saveSettings(true)">-->
 
                         <label class="homey-form-label" for="hassStatusTopic" data-i18n="tab1.hassStatusTopic">Status topic</label>
-                        <input class="homey-form-input" id="hassStatusTopic" type="text" onblur="saveSettings()">
+                        <input class="homey-form-input" id="hassStatusTopic" type="text"> <!--onblur="saveSettings()">-->
 
                         <label class="homey-form-label" for="hassOnlineMessage" data-i18n="tab1.hassOnlineMessage">Online message</label>
-                        <input class="homey-form-input" id="hassOnlineMessage" type="text" onblur="saveSettings()">
+                        <input class="homey-form-input" id="hassOnlineMessage" type="text"> <!--onblur="saveSettings()">-->
 
                         <label class="homey-form-label" for="hassOfflineMessage" data-i18n="tab1.hassOfflineMessage">Offline message</label>
-                        <input class="homey-form-input" id="hassOfflineMessage" type="text" onblur="saveSettings()">
+                        <input class="homey-form-input" id="hassOfflineMessage" type="text"> <!--onblur="saveSettings()">-->
                     </fieldset>
                 </div>
 
@@ -151,7 +174,7 @@
                 </header>
                 <fieldset class="homey-form-fieldset">
                     <label class="homey-form-checkbox">
-                        <input class="homey-form-checkbox-input" id="broadcastSystemState" type="checkbox" onclick="saveSettings()"/>
+                        <input class="homey-form-checkbox-input" id="broadcastSystemState" type="checkbox"/> <!--onclick="saveSettings()"/>-->
                         <span class="homey-form-checkbox-checkmark"></span>
                         <span class="homey-form-checkbox-text"><span data-i18n="tab1.broadcastSystem">Publish system state in a 30sec. interval</span></span>
                     </label>
@@ -160,7 +183,7 @@
                 <div id="systemStateSettings" style="display:none">
                     <fieldset class="homey-form-fieldset">
                         <label class="homey-form-label" for="systemStateTopic" data-i18n="tab1.topic">Topic</label>
-                        <input class="homey-form-input" id="systemStateTopic" type="text" onblur="saveSettings(true)">
+                        <input class="homey-form-input" id="systemStateTopic" type="text"> <!--onblur="saveSettings(true)">-->
                     </fieldset>
                 </div>
 
@@ -170,7 +193,7 @@
                 </header>
                 <fieldset class="homey-form-fieldset">
                     <label class="homey-form-checkbox">
-                        <input class="homey-form-checkbox-input" id="commands" type="checkbox" onclick="saveSettings()"/>
+                        <input class="homey-form-checkbox-input" id="commands" type="checkbox"/> <!--onclick="saveSettings()"/>-->
                         <span class="homey-form-checkbox-checkmark"></span>
                         <span class="homey-form-checkbox-text"><span data-i18n="tab1.commandsListen">Listen to commands</span></span>
                     </label>
@@ -179,7 +202,7 @@
                 <div id="commandsSettings" style="display:none">
                     <fieldset class="homey-form-fieldset">
                         <label class="homey-form-label" for="commandTopic" data-i18n="tab1.topic">Topic</label>
-                        <input class="homey-form-input" id="commandTopic" type="text" onblur="saveSettings()">
+                        <input class="homey-form-input" id="commandTopic" type="text"> <!--onblur="saveSettings()">-->
                     </fieldset>
                 </div>
 
@@ -189,7 +212,7 @@
                 </header>
                 <fieldset class="homey-form-fieldset">
                     <label class="homey-form-checkbox">
-                        <input class="homey-form-checkbox-input" id="birthWill" type="checkbox" onclick="saveSettings()"/>
+                        <input class="homey-form-checkbox-input" id="birthWill" type="checkbox"/> <!--onclick="saveSettings()"/>-->
                         <span class="homey-form-checkbox-checkmark"></span>
                         <span class="homey-form-checkbox-text"><span data-i18n="tab1.birthWillMessages">Send birth & last will messages</span></span>
                     </label>
@@ -198,16 +221,16 @@
                 <div id="birthWillSettings" style="display:none">
                     <fieldset class="homey-form-fieldset">
                         <label class="homey-form-label" for="birthTopic" data-i18n="tab1.birthTopic">Birth topic</label>
-                        <input class="homey-form-input" id="birthTopic" type="text" onblur="saveSettings()">
+                        <input class="homey-form-input" id="birthTopic" type="text"> <!--onblur="saveSettings()">-->
 
                         <label class="homey-form-label" for="birthMessage" data-i18n="tab1.birthMessage">Birth message</label>
-                        <input class="homey-form-input" id="birthMessage" type="text" onblur="saveSettings()">
+                        <input class="homey-form-input" id="birthMessage" type="text"> <!--onblur="saveSettings()">-->
 
                         <label class="homey-form-label" for="willTopic" data-i18n="tab1.willTopic">Last will topic</label>
-                        <input class="homey-form-input" id="willTopic" type="text" onblur="saveSettings()">
+                        <input class="homey-form-input" id="willTopic" type="text"> <!--onblur="saveSettings()">-->
 
                         <label class="homey-form-label" for="willMessage" data-i18n="tab1.willMessage">Last will message</label>
-                        <input class="homey-form-input" id="willMessage" type="text" onblur="saveSettings()">
+                        <input class="homey-form-input" id="willMessage" type="text"> <!--onblur="saveSettings()">-->
                     </fieldset>
                 </div>
 
@@ -217,7 +240,7 @@
                 </header>
                 <fieldset class="homey-form-fieldset">
                     <label class="homey-form-checkbox">
-                        <input class="homey-form-checkbox-input" id="devicesDefaultState" type="checkbox" onclick="saveSettings()"/>
+                        <input class="homey-form-checkbox-input" id="devicesDefaultState" type="checkbox"> <!--onclick="saveSettings()"/>-->
                         <span class="homey-form-checkbox-checkmark"></span>
                         <span class="homey-form-checkbox-text"><span data-i18n="tab1.devicesDefaultState">Set devices active by default</span></span>
                     </label>
@@ -229,7 +252,7 @@
                 </header>
                 <fieldset class="homey-form-fieldset">
                     <label class="homey-form-label" for="performanceDelay" data-i18n="tab1.performanceDelay">Send message delay</label>
-                    <input class="homey-form-input" id="performanceDelay" type="text" onblur="saveSettings()">
+                    <input class="homey-form-input" id="performanceDelay" type="text"> <!--onblur="saveSettings()">-->
                 </fieldset>
 
                 <!--Reset -->

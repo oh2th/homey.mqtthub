@@ -95,30 +95,10 @@ class MQTTHub extends Homey.App {
 
             // listen to broadcast flow card actions
             this.homey.flow.getActionCard('broadcast')
-                .registerRunListener(async (args, state) => {
-                    this.log('Broadcast triggered from flow');
-                    try {
-                        await this.refresh();
-                    }
-                    catch (error) {
-                        this.log('Broadcast flow card trigger failed: ' + error.message);
-                    }
-                });
-
+                .registerRunListener(async (args, state) => await this.flowActionBroadcast(args, state));
             this.homey.flow.getActionCard('start_hub')
-                .registerRunListener(async (args, state) => {
-                    this.log('StartHub triggered from flow');
-                    try {
-                        await this.stop();
-                        Log.debug("Register DeviceManager");
-                        await this.deviceManager.register();
-                        await this.start();
-                    }
-                    catch (error) {
-                        this.log('StartHub flow card trigger failed: ' + error.message);
-                    }
-                });
-
+                .registerRunListener(async (args, state) => await this.flowActionStartHub(args, state));
+                
             this._initialized = true;
         }
         catch (e) {
@@ -153,7 +133,7 @@ class MQTTHub extends Homey.App {
     /**
      * Start Hub
      * */
-    async start() {
+    async start(startAsync = true) {
         try {
             if (!this.mqttClient.isRegistered()) {
                 Log.debug("Connect MQTT Client");
@@ -164,7 +144,18 @@ class MQTTHub extends Homey.App {
                 Log.info('start Hub');
                 await this._sendBirthMessage();
 
-                this.homey.setTimeout(async () => {
+                if (startAsync){
+                    this.homey.setTimeout(async () => {
+                        try {
+                            await this.run();
+                            Log.info('app running: true');
+                        } catch(e) {
+                            Log.error('[RUN] Hub initializasion failed');
+                            Log.error(e);
+                        }
+                    }, STARTUP_DELAY);
+                }
+                else{
                     try {
                         await this.run();
                         Log.info('app running: true');
@@ -172,7 +163,7 @@ class MQTTHub extends Homey.App {
                         Log.error('[RUN] Hub initializasion failed');
                         Log.error(e);
                     }
-                }, STARTUP_DELAY);
+                }
             } else {
                 Log.debug("Waiting for MQTT Client...");
                 this.mqttClient.onRegistered.subscribe(() => this.start(), true); // NOTE: Recursive
@@ -418,10 +409,33 @@ class MQTTHub extends Homey.App {
         }
 
         if (this.homeAssistantDispatcher) {
-            this.homeAssistantDispatcher.dispatchState();
+            await this.homeAssistantDispatcher.dispatchState();
         }
         if (this.homieDispatcher) {
-            this.homieDispatcher.dispatchState();
+            await this.homieDispatcher.dispatchState();
+        }
+    }
+
+
+    /**
+     * Restart Hub
+     * */
+    async restart() {
+        this.log('StartHub triggered from flow');
+        try {
+            await this.stop();
+            Log.debug("Initialize MQTT Client & Message queue");
+            this.mqttClient = new MQTTClient(this.homey);
+            this.messageQueue = new MessageQueue(this.mqttClient, this.settings.performanceDelay);
+            this.topicsRegistry = new TopicsRegistry(this.messageQueue);            
+            Log.debug("Initialize DeviceManager");
+            this.deviceManager = new DeviceManager(this);            
+            Log.debug("Register DeviceManager");
+            await this.deviceManager.register();
+            await this.start(false);
+        }
+        catch (error) {
+            this.log('StartHub flow card trigger failed: ' + error.message);
         }
     }
 
@@ -521,7 +535,7 @@ class MQTTHub extends Homey.App {
 			};
 		}
 		Log.debug("A memory warning has occured: "+data.count+"/"+data.limit);
-		// this._flowTriggerAppMemwarn.trigger(data).catch(error => this.log("onMemwarn() flow trigger error: ", error.message));
+        this.homey.flow.getTriggerCard('app_memwarn').trigger(data).catch(error => this.log("onMemwarn() flow trigger error: ", error.message));
 
 	}
 
@@ -533,9 +547,32 @@ class MQTTHub extends Homey.App {
 			};
 		}
 		Log.debug("A CPU warning has occured: "+data.count+"/"+data.limit);
-		// this._flowTriggerAppCpuwarn.trigger(data).catch(error => this.log("onCpuwarn() flow trigger error: ", error.message));
+        this.homey.flow.getTriggerCard('app_cpuwarn').trigger(data).catch(error => this.log("onCpuwarn() flow trigger error: ", error.message));
 
 	}
+
+    async flowActionStartHub(args, state){
+
+        this.log('Broadcast triggered from flow');
+        try {
+            await this.restart();
+        }
+        catch (error) {
+            this.log('Broadcast flow card trigger failed: ' + error.message);
+        }
+    }
+    
+    async flowActionBroadcast(args, state){
+        this.log('Broadcast triggered from flow');
+        try {
+            await this.refresh();
+        }
+        catch (error) {
+            this.log('Broadcast flow card trigger failed: ' + error.message);
+        }
+    }
 }
+
+
 
 module.exports = MQTTHub;

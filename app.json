@@ -1,6 +1,6 @@
 {
   "id": "org.mqtt.hub",
-  "version": "4.1.8",
+  "version": "4.2.0",
   "compatibility": ">=5.0.0",
   "sdk": 3,
   "brandColor": "#103b7a",
@@ -88,6 +88,11 @@
     "refresh": {
       "method": "get",
       "path": "/refresh",
+      "public": false
+    },
+    "restart": {
+      "method": "get",
+      "path": "/restart",
       "public": false
     },
     "getSettingsChanged": {
@@ -342,6 +347,76 @@
             "name": "device",
             "type": "device",
             "filter": "driver_id=device"
+          }
+        ]
+      },
+      {
+        "id": "app_cpuwarn",
+        "title": {
+          "en": "CPU warning",
+          "nl": "CPU waarschuwing"
+        },
+        "titleFormatted": {
+          "en": "A CPU warning has occurred",
+          "nl": "Er is een CPU waarschuwing opgetreden"
+        },
+        "hint": {
+          "en": "Triggers when the app is consuming too much CPU time.",
+          "nl": "Wordt geactiveerd wanneer de app te veel CPU-tijd verbruikt."
+        },
+        "tokens": [
+          {
+            "name": "count",
+            "type": "number",
+            "example": 5,
+            "title": {
+                "en": "Number of warnings sent",
+                "nl": "Aantal verzonden waarschuwingen"
+            }
+          },
+          {
+            "name": "limit",
+            "type": "number",
+            "example": 25,
+            "title": {
+                "en": "Number of maximum warnings until the app is killed",
+                "nl": "Aantal maximale waarschuwingen totdat de app wordt uitgeschakeld"
+            }
+          }
+        ]
+      },
+      {
+        "id": "app_memwarn",
+        "title": {
+          "en": "Memory warning",
+          "nl": "Geheugen waarschuwing"
+        },
+        "titleFormatted": {
+          "en": "A memory warning has occurred",
+          "nl": "Er is een geheugenwaarschuwing opgetreden"
+        },
+        "hint": {
+          "en": "Triggers when the app is consuming too much memory.",
+          "nl": "Wordt geactiveerd wanneer de app te veel geheugen verbruikt."
+        },
+        "tokens": [
+          {
+            "name": "count",
+            "type": "number",
+            "example": 5,
+            "title": {
+              "en": "Number of warnings sent",
+              "nl": "Aantal verzonden waarschuwingen"
+            }
+          },
+          {
+            "name": "limit",
+            "type": "number",
+            "example": 25,
+            "title": {
+              "en": "Number of maximum warnings until the app is killed",
+              "nl": "Aantal maximale waarschuwingen totdat de app wordt uitgeschakeld"
+            }
           }
         ]
       }
