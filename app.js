@@ -198,6 +198,7 @@ class MQTTHub extends Homey.App {
         }
 
         this._stopCommunicationProtocol();
+        this._stopHomeAssistantDiscovery();
         await this._stopBroadcasters();
         this._stopCommands();
         delete this.protocol;
@@ -416,22 +417,31 @@ class MQTTHub extends Homey.App {
         }
     }
 
+    async restartManager(){
+        Log.info("Restart Manager instances.");
+        Log.debug("Initialize MQTT Client & Message queue");
+        this.mqttClient = new MQTTClient(this.homey);
+        this.messageQueue = new MessageQueue(this.mqttClient, this.settings.performanceDelay);
+        this.topicsRegistry = new TopicsRegistry(this.messageQueue);       
+        
+        // Log.debug("Initialize Homeassistant Dispatcher");
+        // this.homeAssistantDispatcher = HomeAssistantDispatcher(this);
+        Log.debug("Initialize DeviceManager");
+        this.deviceManager = new DeviceManager(this);            
+        Log.debug("Register DeviceManager");
+        await this.deviceManager.register();
+    }   
 
     /**
      * Restart Hub
      * */
     async restart() {
-        this.log('StartHub triggered from flow');
+
+        Log.info("====================");
+        Log.info('Restart Hub!'); 
         try {
             await this.stop();
-            Log.debug("Initialize MQTT Client & Message queue");
-            this.mqttClient = new MQTTClient(this.homey);
-            this.messageQueue = new MessageQueue(this.mqttClient, this.settings.performanceDelay);
-            this.topicsRegistry = new TopicsRegistry(this.messageQueue);            
-            Log.debug("Initialize DeviceManager");
-            this.deviceManager = new DeviceManager(this);            
-            Log.debug("Register DeviceManager");
-            await this.deviceManager.register();
+            await this.restartManager();
             await this.start(false);
         }
         catch (error) {

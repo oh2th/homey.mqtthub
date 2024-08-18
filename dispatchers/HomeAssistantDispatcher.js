@@ -270,6 +270,8 @@ const DEFAULT_TOPIC = 'homeassistant';
 const STATUS_TOPIC = 'homeassistant/status';
 const STATUS_ONLINE = 'online';
 const STATUS_OFFLINE = 'offline';
+const CAPABILITY_NAME_DEVICE = 'dev_cap';
+const CAPABILITY_NAME_CAPABILITY = 'cap';
 
 /**
  * Home Assistant Discovery
@@ -323,6 +325,7 @@ class HomeAssistantDispatcher {
 
             this.normalize = settings.normalize;
             this.deviceId = settings.normalize !== false ? normalize(settings.deviceId) : settings.deviceId;
+            this.capabilityName = settings.capabilityName;
 
             await this.registerHassStatus(settings);
 
@@ -735,8 +738,21 @@ class HomeAssistantDispatcher {
         const type = config.type;
         const stateTopic = this.homieDispatcher.getTopic(device, capability);
 
+        // Fix for HomeAssistant change for device/entity names. The capability name must no longer contain the device name.
+        // https://community.home-assistant.io/t/psa-mqtt-name-changes-in-2023-8/598099
+        let name = '';
+        switch (this.capabilityName){
+            case CAPABILITY_NAME_CAPABILITY:
+                name = capabilityName;
+                break;
+            default: //CAPABILITY_NAME_DEVICE
+                name = `${device.name} - ${capabilityName}`;
+                break;
+        }
+
         const payload = {
-            name: `${device.name} - ${capabilityName}`,
+            // name: `${device.name} - ${capabilityName}`,
+            name: name,
             unique_id: `${device.id}_${capability.id}`,
             state_topic: stateTopic
         };

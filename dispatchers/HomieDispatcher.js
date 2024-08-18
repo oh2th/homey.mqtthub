@@ -18,6 +18,9 @@ const NODE_COMMANDS = ['$type', '$name', '$properties'];
 const PROPERTY_COMMANDS = ['$name', '$retained', '$settable', '$unit', '$datatype', '$format'];
 const COLOR_CAPABILITIES = ['light_hue', 'light_saturation', 'light_temperature'];
 
+const CAPABILITY_NAME_DEVICE = 'dev_cap';
+const CAPABILITY_NAME_CAPABILITY = 'cap';
+
 const round = function (value, min, max) {
     if (typeof value !== 'number') return value;
 
@@ -336,10 +339,10 @@ class HomieDispatcher {
                     // https://community.home-assistant.io/t/psa-mqtt-name-changes-in-2023-8/598099
                     let name = '';
                     switch (this.settings.capabilityName){
-                        case 'cap':
+                        case CAPABILITY_NAME_CAPABILITY:
                             name = _.replace(capabilityName, "_", " ");
                             break;
-                        default: //case 'dev_cap':
+                        default: //CAPABILITY_NAME_DEVICE
                             name = _.replace([device.name, capabilityName].filter(x => x).join(' - '), "_", " ");
                             break;
                         }
