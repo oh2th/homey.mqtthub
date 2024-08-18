@@ -121,5 +121,8 @@
   },
   "4.2.1": {
     "en": "Fixed capability name setting for HA discovery. Fixed HA discovery restart on settings saved/hub restart"
+  },
+  "4.2.2": {
+    "en": "Fixed HA discovery on restart."
   }
 }

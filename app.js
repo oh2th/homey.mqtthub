@@ -179,6 +179,10 @@ class MQTTHub extends Homey.App {
      * */
     async stop() {
         if (!this._running) return;
+
+        // Sending clear messages is done async via message queue. Not sure if this is finished before clear/restart of queue.
+        // this._stopHomeAssistantDiscovery();
+
         this._running = false;
 
         Log.info('stop Hub');
@@ -198,7 +202,6 @@ class MQTTHub extends Homey.App {
         }
 
         this._stopCommunicationProtocol();
-        this._stopHomeAssistantDiscovery();
         await this._stopBroadcasters();
         this._stopCommands();
         delete this.protocol;
@@ -430,6 +433,9 @@ class MQTTHub extends Homey.App {
         this.deviceManager = new DeviceManager(this);            
         Log.debug("Register DeviceManager");
         await this.deviceManager.register();
+
+        // Clear instances to re-create in start()
+        this.homeAssistantDispatcher = null;
     }   
 
     /**
