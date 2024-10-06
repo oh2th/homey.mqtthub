@@ -380,7 +380,16 @@ function getLanguage() {
 }
 
 function selectProtocol(protocol) {
-    saveSettings();
+    // saveSettings(false);
+
+    for (let key in defaultSettings) {
+        let el = document.getElementById(key);
+        if (el) {
+            hubSettings[key] = typeof defaultSettings[key] === 'boolean' ? el.checked : el.value;
+        }
+    }
+
+    updateInterface();
 }
 
 function updateInterface() {
@@ -487,6 +496,11 @@ function updateProgress() {
             let width = Math.ceil(percent * 100) + '%';
             $progress.css('width', width);
         }
+    });
+    Homey.api('GET', '/running', null, (err, result) => {
+        // $("#running").prop("disabled", false);
+        document.getElementById("running").checked = result;
+        running = !err && result;
     });
 }
 

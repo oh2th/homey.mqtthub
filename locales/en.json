@@ -63,6 +63,8 @@
   "tab1": {
     "title": "Settings",
     "general": "General",
+    "startButton": "Start",
+    "stopButton": "Stop",
     "settings": "Settings",
     "saveSettings": "Save settings",
     "enabled": "Enabled",

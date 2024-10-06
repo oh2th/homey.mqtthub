@@ -124,5 +124,8 @@
   },
   "4.2.2": {
     "en": "Fixed HA discovery on restart."
+  },
+  "4.2.3": {
+    "en": "Changed start/stop control in app settings. Fixed custom settings. Fixed HA discovey on Hub restart"
   }
 }

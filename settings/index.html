@@ -43,12 +43,29 @@
                     <h1 class="homey-title" data-i18n="tab1.general">General</h1>
                 </header>
                 <fieldset class="homey-form-fieldset">
+                    <table style="table-layout: fixed; width: 100%;">
+                        <tr>
+                            <td style="width: 30%;">
+                                <button class="homey-button-primary-shadow-full" id="startButton" @click="setRunning(true)" data-i18n="tab1.startButton">
+                                    Start
+                                </button>
+                            </td>
+                            <td style="width: 30%;">
+                                <button class="homey-button-danger-shadow-full" id="stopButton" @click="setRunning(false)" data-i18n="tab1.stopButton"
+                                    style="margin-left: 15px;">
+                                    Stop
+                                </button>
+                            </td>
+                            <td style="width: 40%;">
+                                <label class="homey-form-checkbox" style="margin-left: 30px; pointer-events: none; opacity:0.5;">
+                                    <input class="homey-form-checkbox-input" id="running" disabled="disabled" type="checkbox"/> <!-- v-model="running" @click="setRunning($event.target.checked)"/> -->
+                                    <span class="homey-form-checkbox-checkmark"></span>
+                                    <span class="homey-form-checkbox-text"><span data-i18n="tab1.running">Running</span></span>
+                                </label>
+                            </td>
+                        </tr>
+                    </table>
                     <!-- <legend class="homey-form-legend" ><span data-i18n="tab1.general">General</span></legend> -->
-                    <label class="homey-form-checkbox">
-                        <input class="homey-form-checkbox-input" id="running" disabled="disabled" v-model="running" type="checkbox" @click="setRunning($event.target.checked)"/>
-                        <span class="homey-form-checkbox-checkmark"></span>
-                        <span class="homey-form-checkbox-text"><span data-i18n="tab1.running">Running</span></span>
-                    </label>
                     <label class="homey-form-label" for="refreshButton" data-i18n="tab1.refresh">Publish the state of all devices</label>
                     <button class="homey-button-secondary-shadow-full" id="refreshButton" @click="refresh()" data-i18n="tab1.broadcast">
                         Broadcast
@@ -102,12 +119,12 @@
                             <span class="homey-form-checkbox-text"><span data-i18n="tab1.topicIncludeClass">Include device class in topic</span></span>
                         </label>
                         <label class="homey-form-checkbox">
-                            <input class="homey-form-checkbox-input" id="topicIncludeZone" disabled="disabled" type="checkbox"/> <!-- onclick="saveSettings(true)"/> -->
+                            <input class="homey-form-checkbox-input" id="topicIncludeZone" type="checkbox"/> <!-- onclick="saveSettings(true)"/> -->
                             <span class="homey-form-checkbox-checkmark"></span>
                             <span class="homey-form-checkbox-text"><span data-i18n="tab1.topicIncludeZone">Include zone in topic</span></span>
                         </label>
                         <label class="homey-form-checkbox">
-                            <input class="homey-form-checkbox-input" id="normalize" disabled="disabled" type="checkbox"/> <!-- onclick="saveSettings(true)"/> -->
+                            <input class="homey-form-checkbox-input" id="normalize" type="checkbox"/> <!-- onclick="saveSettings(true)"/> -->
                             <span class="homey-form-checkbox-checkmark"></span>
                             <span class="homey-form-checkbox-text"><span data-i18n="tab1.topicNormalize">Normalize topics (lowercase, remove characters, etc.)</span></span>
                         </label>

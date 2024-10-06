@@ -136,7 +136,7 @@ class MQTTHub extends Homey.App {
     async start(startAsync = true) {
         try {
             if (!this.mqttClient.isRegistered()) {
-                Log.debug("Connect MQTT Client");
+                Log.info("Connect MQTT Client");
                 await this.mqttClient.connect();
             }
 
@@ -379,7 +379,7 @@ class MQTTHub extends Homey.App {
         Log.info(running ? 'switch on' : 'switch off');
         if (this.mqttClient) {
             if (running) {
-                this.start()
+                this.start(false)
                     .then(() => Log.info("App running"))
                     .catch(error => Log.error(error));
             }
@@ -422,20 +422,26 @@ class MQTTHub extends Homey.App {
 
     async restartManager(){
         Log.info("Restart Manager instances.");
-        Log.debug("Initialize MQTT Client & Message queue");
+        Log.info("Initialize MQTT Client & Message queue");
         this.mqttClient = new MQTTClient(this.homey);
         this.messageQueue = new MessageQueue(this.mqttClient, this.settings.performanceDelay);
         this.topicsRegistry = new TopicsRegistry(this.messageQueue);       
         
         // Log.debug("Initialize Homeassistant Dispatcher");
         // this.homeAssistantDispatcher = HomeAssistantDispatcher(this);
-        Log.debug("Initialize DeviceManager");
+        Log.info("Initialize DeviceManager");
         this.deviceManager = new DeviceManager(this);            
-        Log.debug("Register DeviceManager");
+        Log.info("Register DeviceManager");
         await this.deviceManager.register();
 
+        // wait to finish async messaging
+        await this._wait(5000);
+
         // Clear instances to re-create in start()
-        this.homeAssistantDispatcher = null;
+        Log.info("Clear HomeAssistantDispatcher instance");
+        delete this.homeAssistantDispatcher;
+        // this.homeAssistantDispatcher = null;
+        
     }   
 
     /**
@@ -529,6 +535,12 @@ class MQTTHub extends Homey.App {
         await this.mqttClient.publish(new Message(this._willTopic, null, 1, true));
     }
 
+    async _wait(delay = 1000){
+        await new Promise(resolve => {
+            setTimeout(() => resolve(), delay);
+        });
+    }
+
     uninstall() {
         try {
             this._sendLastWillMessageAndReleaseAllTopics()
@@ -587,6 +599,7 @@ class MQTTHub extends Homey.App {
             this.log('Broadcast flow card trigger failed: ' + error.message);
         }
     }
+
 }
 
 
