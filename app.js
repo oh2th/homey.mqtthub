@@ -427,21 +427,16 @@ class MQTTHub extends Homey.App {
         this.messageQueue = new MessageQueue(this.mqttClient, this.settings.performanceDelay);
         this.topicsRegistry = new TopicsRegistry(this.messageQueue);       
         
-        // Log.debug("Initialize Homeassistant Dispatcher");
-        // this.homeAssistantDispatcher = HomeAssistantDispatcher(this);
+        // Clear instances to re-create in start()
+        Log.info("Clear HomeAssistantDispatcher instance");
+        this.homeAssistantDispatcher.destroy();
+        delete this.homeAssistantDispatcher;
+        // this.homeAssistantDispatcher = null;
+
         Log.info("Initialize DeviceManager");
         this.deviceManager = new DeviceManager(this);            
         Log.info("Register DeviceManager");
         await this.deviceManager.register();
-
-        // wait to finish async messaging
-        await this._wait(5000);
-
-        // Clear instances to re-create in start()
-        Log.info("Clear HomeAssistantDispatcher instance");
-        delete this.homeAssistantDispatcher;
-        // this.homeAssistantDispatcher = null;
-        
     }   
 
     /**
@@ -449,11 +444,21 @@ class MQTTHub extends Homey.App {
      * */
     async restart() {
 
-        Log.info("====================");
+        Log.info("============================");
         Log.info('Restart Hub!'); 
+        Log.info("============================");
         try {
+            Log.info("------------------------------");
+            Log.info('Stop Hub'); 
+            Log.info("------------------------------");
             await this.stop();
+            Log.info("------------------------------");
+            Log.info('Restart manager'); 
+            Log.info("------------------------------");
             await this.restartManager();
+            Log.info("------------------------------");
+            Log.info('Start Hub'); 
+            Log.info("------------------------------");
             await this.start(false);
         }
         catch (error) {

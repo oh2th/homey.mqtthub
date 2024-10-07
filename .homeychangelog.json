@@ -127,5 +127,8 @@
   },
   "4.2.3": {
     "en": "Changed start/stop control in app settings. Fixed custom settings. Fixed HA discovey on Hub restart"
+  },
+  "4.2.4": {
+    "en": "Fixed HA discovey on Hub restart"
   }
 }

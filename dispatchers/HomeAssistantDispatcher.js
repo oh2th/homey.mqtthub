@@ -407,6 +407,10 @@ class HomeAssistantDispatcher {
     }
 
     dispatchState() {
+        // Continue only if topic is registered...Ignore calls from [this.mqttClient.onRegistered.subscribe(() => this.dispatchState(), true);]
+        if (this.topic == undefined){
+            return;
+        }
         this._registered = new Set();
         this.registerDevices();
     }
