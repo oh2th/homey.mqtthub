@@ -130,5 +130,8 @@
   },
   "4.2.4": {
     "en": "Fixed HA discovey on Hub restart"
+  },
+  "4.3.0": {
+    "en": "Added new device classes and capabilities. Added device setting for cumulative"
   }
 }

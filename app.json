@@ -1,7 +1,7 @@
 {
   "id": "org.mqtt.hub",
-  "version": "4.2.4",
-  "compatibility": ">=5.0.0",
+  "version": "4.3.0",
+  "compatibility": ">=12.2.0",
   "sdk": 3,
   "brandColor": "#103b7a",
   "name": {
@@ -264,6 +264,45 @@
               }
             }
           ]
+        },
+        {
+          "type": "group",
+          "label": { 
+              "en": "Energy"
+          },
+          "children": 
+          [
+              {
+                  "id": "set_energy_cumulative",
+                  "type": "checkbox",
+                  "value": false,
+                  "label": {
+                      "en": "Cumulative energy measuring"
+                  },
+                  "hint": {
+                      "en": "Enable this setting if the device is measuring the cumulative energy usage."
+                  }
+              },
+              {
+                  "id": "energy_cumulative_include",
+                  "type": "checkbox",
+                  "value": false,
+                  "label": {
+                      "en": "Include in total energy"
+                  }
+              },
+              {
+                  "id": "set_energy_home_battery",
+                  "type": "checkbox",
+                  "value": false,
+                  "label": {
+                      "en": "Home Battery"
+                  },
+                  "hint": {
+                      "en": "Define a device with class=battery having a measure_power capability as home battery. Provide positive values to indicate the battery is consuming energy (charging), provide negative values to indicate the battery is delivering energy back to the home (discharging)"
+                  }
+              }
+          ]
         }
       ]
     },
@@ -287,6 +326,47 @@
         },
         {
           "id": "discover"
+        }
+      ],
+      "settings": [
+        {
+          "type": "group",
+          "label": { 
+              "en": "Energy"
+          },
+          "children": 
+          [
+              {
+                  "id": "set_energy_cumulative",
+                  "type": "checkbox",
+                  "value": false,
+                  "label": {
+                      "en": "Cumulative energy measuring"
+                  },
+                  "hint": {
+                      "en": "Enable this setting if the device is measuring the cumulative energy usage."
+                  }
+              },
+              {
+                  "id": "energy_cumulative_include",
+                  "type": "checkbox",
+                  "value": false,
+                  "label": {
+                      "en": "Include in total energy"
+                  }
+              },
+              {
+                  "id": "set_energy_home_battery",
+                  "type": "checkbox",
+                  "value": false,
+                  "label": {
+                      "en": "Home Battery"
+                  },
+                  "hint": {
+                      "en": "Define a device with class=battery having a measure_power capability as home battery. Provide positive values to indicate the battery is consuming energy (charging), provide negative values to indicate the battery is delivering energy back to the home (discharging)"
+                  }
+              }
+          ]
         }
       ]
     }
