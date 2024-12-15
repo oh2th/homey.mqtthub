@@ -37,6 +37,7 @@ class MQTTDevice extends Homey.Device {
         this.id = this.getData().id;
 
         this.onSettings({oldSettings:null, newSettings:super.getSettings(), changedKeys:[]});
+        this.setSettings({class: this.getClass()});
 
         this.thisDeviceChanged = this.homey.flow.getDeviceTriggerCard('change');
         this.someDeviceChanged = this.homey.flow.getTriggerCard('device_changed');
@@ -80,7 +81,14 @@ class MQTTDevice extends Homey.Device {
         } else {
             this.initTopics();
         }
-
+        // device class
+        if (changedKeys.indexOf('class') > -1){
+            let deviceClass = newSettings['class'];
+            if (deviceClass != undefined && deviceClass != "" && deviceClass != this.getClass()){
+                await this.setClass(deviceClass);
+                this.log("onSettings(): Device class changed to: "+deviceClass);
+            } 
+        }
         // Energy settings
         if (changedKeys.indexOf('set_energy_cumulative') > -1){
             if (newSettings['set_energy_cumulative']){
@@ -425,7 +433,7 @@ class MQTTDevice extends Homey.Device {
 
         let tokens = {
             'device': this.getName(),
-            'variable': capabilityId,
+            'capability': capabilityId,
             'value': '' + value
         };
         try {

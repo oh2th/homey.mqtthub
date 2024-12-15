@@ -7,13 +7,22 @@ class MQTTHomieDiscoveryDevice extends Homey.Device {
 	onInit() {
         this.log('MQTT Homie Discovery Device...');
 
+        this.setSettings({class: this.getClass()});
+        
         // NOTE: This device is never initialized.
         // The Homie Discovery driver adds a pre-configured MQTT Device
         // see driver.onMapDeviceClass(device)
     }
 
     async onSettings({oldSettings, newSettings, changedKeys}) {
-
+        // device class
+        if (changedKeys.indexOf('class') > -1){
+            let deviceClass = newSettings['class'];
+            if (deviceClass != undefined && deviceClass != "" && deviceClass != this.getClass()){
+                await this.setClass(deviceClass);
+                this.log("onSettings(): Device class changed to: "+deviceClass);
+            } 
+        }
         // Energy settings
         if (changedKeys.indexOf('set_energy_cumulative') > -1){
             if (newSettings['set_energy_cumulative']){
