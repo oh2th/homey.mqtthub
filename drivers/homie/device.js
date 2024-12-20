@@ -10,7 +10,8 @@ class MQTTHomieDiscoveryDevice extends Homey.Device {
         // this.setSettings({class: this.getClass()});
         // // update settings from device attributes
         try{
-            let energy = this.getEnergy();
+            this.setSettings({class: this.getClass()});
+            let energy = this.getEnergy() || {};
             let settings = {};
             settings["set_energy_cumulative"] =  energy["cumulative"] != undefined ? energy["cumulative"] : false;
             settings["set_energy_home_battery"] = energy["homeBattery"] != undefined ? energy["homeBattery"] : false;
@@ -73,21 +74,23 @@ class MQTTHomieDiscoveryDevice extends Homey.Device {
 
     // Energy settings ================================================================================================
     async _setEnergyCumulative(value = false){
-        await this.setEnergy(
-            { "cumulative": value }
-        );
+        let energy = JSON.parse(JSON.stringify(this.getEnergy())) || {};
+        energy["cumulative"] =  value;
+        await this.setEnergy( energy );
     }
 
     async _setEnergyHomeBattery(value = false){
-        await this.setEnergy(
-            { "homeBattery": value }
-        );
+        let energy = JSON.parse(JSON.stringify(this.getEnergy())) || {};
+        energy["homeBattery"] =  value;
+        await this.setEnergy( energy );
     }
 
     async _setEnergyCumulativeImportedCapability(value){
-        let energy = JSON.parse(JSON.stringify(this.getEnergy()));
+        let energy = JSON.parse(JSON.stringify(this.getEnergy())) || {};
         if (value == ''){
-            delete  energy["cumulativeImportedCapability"];
+            if (energy["cumulativeImportedCapability"]){
+                delete  energy["cumulativeImportedCapability"];
+            }
         }
         else{
             energy["cumulativeImportedCapability"] =  value;
@@ -96,9 +99,11 @@ class MQTTHomieDiscoveryDevice extends Homey.Device {
     }
 
     async _setEnergyCumulativeExportedCapability(value){
-        let energy = JSON.parse(JSON.stringify(this.getEnergy()));
+        let energy = JSON.parse(JSON.stringify(this.getEnergy())) || {};
         if (value == ''){
-            delete energy["cumulativeExportedCapability"];
+            if (energy["cumulativeExportedCapability"]){
+                delete energy["cumulativeExportedCapability"];
+            }
         }
         else{
             energy["cumulativeExportedCapability"] =  value;

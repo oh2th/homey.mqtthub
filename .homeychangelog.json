@@ -138,6 +138,9 @@
     "en": "Added device setting for device class. Fixed int (0..100) conversion."
   },
   "4.3.2": {
-    "en": "HomeyEnergy: Added device settings to define device as cumulative and set importet/exported meter capabilities."
+    "en": "HomeyEnergy: Added device settings to define device as cumulative and set imported/exported meter capabilities."
+  },
+  "4.3.3": {
+    "en": "Fixed device settings."
   }
 }
