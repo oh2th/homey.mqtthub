@@ -136,5 +136,8 @@
   },
   "4.3.1": {
     "en": "Added device setting for device class. Fixed int (0..100) conversion."
+  },
+  "4.3.2": {
+    "en": "HomeyEnergy: Added device settings to define device as cumulative and set importet/exported meter capabilities."
   }
 }

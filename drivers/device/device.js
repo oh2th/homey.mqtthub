@@ -37,7 +37,20 @@ class MQTTDevice extends Homey.Device {
         this.id = this.getData().id;
 
         this.onSettings({oldSettings:null, newSettings:super.getSettings(), changedKeys:[]});
-        this.setSettings({class: this.getClass()});
+        // this.setSettings({class: this.getClass()});
+        // // update settings from device attributes
+        try{
+            let energy = this.getEnergy();
+            let settings = {};
+            settings["set_energy_cumulative"] =  energy["cumulative"] != undefined ? energy["cumulative"] : false;
+            settings["set_energy_home_battery"] = energy["homeBattery"] != undefined ? energy["homeBattery"] : false;
+            settings["set_energy_cumulative_imported_capability"] = energy["cumulativeImportedCapability"] != undefined ? energy["cumulativeImportedCapability"] : "";
+            settings["set_energy_cumulative_exported_capability"] = energy["cumulativeExportedCapability"] != undefined ? energy["cumulativeExportedCapability"] : "";
+            await this.setSettings(settings);
+        }
+        catch(error){
+            this.error("Error updating device enrergy settings: "+error.message);
+        }
 
         this.thisDeviceChanged = this.homey.flow.getDeviceTriggerCard('change');
         this.someDeviceChanged = this.homey.flow.getTriggerCard('device_changed');
@@ -75,7 +88,7 @@ class MQTTDevice extends Homey.Device {
             } catch(e) {
                 // probably invalid JSON
                 this.log("failed to update MQTT Device topics", e);
-                this.restoreSettingsTopics(settings);
+                this.restoreSettingsTopics(JSON.parse(JSON.stringify(settings)));
                 this.initTopics();
             }
         } else {
@@ -110,22 +123,56 @@ class MQTTDevice extends Homey.Device {
                 await this._setEnergyHomeBattery(false);
             } 
         }
+        if (changedKeys.indexOf('set_energy_cumulative_imported_capability') > -1){
+            if (newSettings['set_energy_cumulative_imported_capability'] != undefined){
+                this.log("onSettings(): set_energy_cumulative_imported_capability: "+newSettings['set_energy_cumulative_imported_capability']);
+                await this._setEnergyCumulativeImportedCapability(newSettings['set_energy_cumulative_imported_capability']);
+            }
+        }
+        if (changedKeys.indexOf('set_energy_cumulative_exported_capability') > -1){
+            if (newSettings['set_energy_cumulative_exported_capability'] != undefined){
+                this.log("onSettings(): set_energy_cumulative_exported_capability: "+newSettings['set_energy_cumulative_exported_capability']);
+                await this._setEnergyCumulativeExportedCapability(newSettings['set_energy_cumulative_exported_capability']);
+            }
+        }
 
     }
 
     // Energy settings ================================================================================================
     async _setEnergyCumulative(value = false){
-        await this.setEnergy(
-            { "cumulative": value }
-        );
+        let energy = JSON.parse(JSON.stringify(this.getEnergy()));
+        energy["cumulative"] =  value;
+        await this.setEnergy( energy );
     }
 
     async _setEnergyHomeBattery(value = false){
-        await this.setEnergy(
-            { "homeBattery": value }
-        );
+        let energy = JSON.parse(JSON.stringify(this.getEnergy()));
+        energy["homeBattery"] =  value;
+        await this.setEnergy( energy );
     }
-    
+
+    async _setEnergyCumulativeImportedCapability(value){
+        let energy = JSON.parse(JSON.stringify(this.getEnergy()));
+        if (value == ''){
+            delete  energy["cumulativeImportedCapability"];
+        }
+        else{
+            energy["cumulativeImportedCapability"] =  value;
+        }
+        await this.setEnergy( energy );
+    }
+
+    async _setEnergyCumulativeExportedCapability(value){
+        let energy = JSON.parse(JSON.stringify(this.getEnergy()));
+        if (value == ''){
+            delete energy["cumulativeExportedCapability"];
+        }
+        else{
+            energy["cumulativeExportedCapability"] =  value;
+        }
+        await this.setEnergy( energy );
+    }
+
     /**
      * compile mathjs expressions
      */

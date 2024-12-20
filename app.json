@@ -1,6 +1,6 @@
 {
   "id": "org.mqtt.hub",
-  "version": "4.3.1",
+  "version": "4.3.2",
   "compatibility": ">=12.2.0",
   "sdk": 3,
   "brandColor": "#103b7a",
@@ -891,6 +891,26 @@
                   "hint": {
                       "en": "Define a device with class=battery having a measure_power capability as home battery. Provide positive values to indicate the battery is consuming energy (charging), provide negative values to indicate the battery is delivering energy back to the home (discharging)"
                   }
+              },
+              {
+                  "id": "set_energy_cumulative_imported_capability",
+                  "type": "text",
+                  "value": "",
+                  "label": {
+                      "en": "Meter capability for imported energy",
+                      "de": "Zähler-Capability für importierte Energie",
+                      "nl": "Meter capability voor importeerde energie"
+                  }
+              },
+              {
+                  "id": "set_energy_cumulative_exported_capability",
+                  "type": "text",
+                  "value": "",
+                  "label": {
+                      "en": "Meter capability for exported energy",
+                      "de": "Zähler-Capability für exportierte Energie",
+                      "nl": "Meter capability voor exporteerde energie"
+                  }
               }
           ]
         }
@@ -1550,6 +1570,26 @@
                   },
                   "hint": {
                       "en": "Define a device with class=battery having a measure_power capability as home battery. Provide positive values to indicate the battery is consuming energy (charging), provide negative values to indicate the battery is delivering energy back to the home (discharging)"
+                  }
+              },
+              {
+                  "id": "set_energy_cumulative_imported_capability",
+                  "type": "text",
+                  "value": "",
+                  "label": {
+                      "en": "Meter capability for imported energy",
+                      "de": "Zähler-Capability für importierte Energie",
+                      "nl": "Meter capability voor importeerde energie"
+                  }
+              },
+              {
+                  "id": "set_energy_cumulative_exported_capability",
+                  "type": "text",
+                  "value": "",
+                  "label": {
+                      "en": "Meter capability for exported energy",
+                      "de": "Zähler-Capability für exportierte Energie",
+                      "nl": "Meter capability voor exporteerde energie"
                   }
               }
           ]
