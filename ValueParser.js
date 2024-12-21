@@ -11,7 +11,7 @@ const formatValue = function (value, capability, percentageScale) {
     }
 
     // Workaround for added translations to capability definition, Use 'en' as default to check i18n unit
-    if (capability && percentageScale && ( capability.units === '%' || capability.units['en'] === '%') ) {
+    if (capability && percentageScale  && capability.units !== undefined && ( capability.units === '%' || capability.units['en'] === '%') ) {
         switch (percentageScale) {
             case 'int':
                 if (capability.min === 0 && capability.max === 1)
@@ -36,7 +36,7 @@ const parseValue = function (value, capability, percentageScale) {
     if (capability) {
         // Handle percentage scaling
         // Workaround for added translations to capability definition, Use 'en' as default to check i18n unit
-        if (percentageScale && ( capability.units === '%' || capability.units['en'] === '%') ) {
+        if (percentageScale && capability.units !== undefined &&( capability.units === '%' || capability.units['en'] === '%') ) {
             switch (percentageScale) {
                 case 'int':
                     if (capability.min === 0 && capability.max === 1)

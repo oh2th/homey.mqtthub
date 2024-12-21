@@ -145,5 +145,7 @@
   },
   "4.3.4": {
     "en": "Added JavaScript function as valueTemplate/outputTemplate. Use syntax: (value) => { return value * 100 }."
-  }
-}
+  },
+  "4.3.5": {
+    "en": "Fixed unit check error for enum capabilities."
+  }}
