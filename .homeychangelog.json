@@ -142,5 +142,8 @@
   },
   "4.3.3": {
     "en": "Fixed device settings."
+  },
+  "4.3.4": {
+    "en": "Added JavaScript function as valueTemplate/outputTemplate. Use syntax: (value) => { return value * 100 }."
   }
 }

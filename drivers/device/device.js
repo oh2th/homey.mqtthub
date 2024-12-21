@@ -355,11 +355,20 @@ class MQTTDevice extends Homey.Device {
                     if(template) {
                         try {
                             const data = this._parseMessageData(message);
-                            const mathjs = this.compiled.get(template);
-                            const result = mathjs
-                                ? mathjs.evaluate(data)  // mathJS
-                                : jsonpath.query(data, template); // jsonPath
-                            message = Array.isArray(result) ? result[0] : result;
+                            
+                            // 1) Try to parse template as JS function
+                            try{
+                                const converter = eval(template);
+                                message = converter(data);
+                            }
+                            // If not possible, try MathJS or JSONpath
+                            catch(error){
+                                const mathjs = this.compiled.get(template);
+                                const result = mathjs
+                                    ? mathjs.evaluate(data)  // mathJS
+                                    : jsonpath.query(data, template); // jsonPath
+                                message = Array.isArray(result) ? result[0] : result;
+                            }
                         } catch(e) {
                             this.log("failed to parse & query json message", e);
                         }
@@ -447,17 +456,25 @@ class MQTTDevice extends Homey.Device {
             try {
                 let state = this.getState() || {};
                 state.value = payload;
-                const mathjs = this.compiled.get(template);
-                if(mathjs) { // math?
-                    payload = mathjs.evaluate(state);
-                } else { // json-t
-                    if(!template.startsWith('{{') && (template.startsWith('{') || template.startsWith('['))) {
-                        payload = jsontObject(template, state);
-                    } else {
-                        payload = jsontString(template, state);
-                    }
+
+                // 1) Try to parse template as JS function
+                try{
+                    const converter = eval(template);
+                    payload = converter(value);
                 }
-                
+                // If not possible, try MathJS or JSONpath
+                catch(error){
+                    const mathjs = this.compiled.get(template);
+                    if(mathjs) { // math?
+                        payload = mathjs.evaluate(state);
+                    } else { // json-t
+                        if(!template.startsWith('{{') && (template.startsWith('{') || template.startsWith('['))) {
+                            payload = jsontObject(template, state);
+                        } else {
+                            payload = jsontString(template, state);
+                        }
+                    }
+                }                
             } catch(e) {
                 this.log("failed to format output message", e);
             }
